@@ -1,5 +1,7 @@
 'use client';
 
+import {useEffect, useState} from 'react';
+import {getAvailableSlots} from '@/actions/get-available-slots';
 import {cn} from '@/lib/utils';
 
 // 1-hour slots from 09:00 to 18:00
@@ -15,13 +17,31 @@ const SLOTS = Array.from({length: 9}, (_, i) => {
 });
 
 type TimeSlotsProps = {
-  selected: string | null;
+  selected?: string;
   onSelect: (slot: string) => void;
-  disabled?: boolean;
+  date?: Date;
 };
 
-export function TimeSlots({selected, onSelect, disabled}: TimeSlotsProps) {
-  if (disabled) {
+export function TimeSlots({
+  selected,
+  onSelect,
+  date,
+}: TimeSlotsProps) {
+  const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchAvailableSlots = async () => {
+      if (date) {
+        const response = await getAvailableSlots(date);
+
+        setAvailableSlots(response);
+      }
+    };
+
+    fetchAvailableSlots();
+  }, [date]);
+
+  if (!date) {
     return (
       <p className="rounded-xl bg-secondary px-4 py-6 text-center text-sm text-muted-foreground">
         Selecione uma data para ver os horários disponíveis.
@@ -33,6 +53,8 @@ export function TimeSlots({selected, onSelect, disabled}: TimeSlotsProps) {
     <div className="grid grid-cols-3 gap-2 sm:grid-cols-3">
       {SLOTS.map(slot => {
         const isSelected = selected === slot.value;
+        const isDisabled = !availableSlots.includes(slot.value);
+
         return (
           <button
             key={slot.value}
@@ -40,8 +62,10 @@ export function TimeSlots({selected, onSelect, disabled}: TimeSlotsProps) {
             onClick={() => onSelect(slot.value)}
             aria-pressed={isSelected}
             title={slot.range}
+            disabled={isDisabled}
             className={cn(
               'rounded-xl border px-2 py-3 text-sm font-semibold transition-colors',
+              isDisabled && 'cursor-not-allowed opacity-50',
               isSelected
                 ? 'border-primary bg-primary text-primary-foreground'
                 : 'border-border bg-card text-foreground hover:border-primary/50 hover:bg-secondary',

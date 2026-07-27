@@ -6,35 +6,24 @@ import {
   CheckCircle2,
   Clock,
   Mail,
-  MailCheck,
   PawPrint,
-  Phone,
   User,
   UserPen,
 } from 'lucide-react';
 import Image from 'next/image';
-import type React from 'react';
 import {useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {z} from 'zod';
-import {createOrGetUser} from '@/actions/create-or-get-user';
+import {createBooking} from '@/actions/create-booking';
 import {BookingCalendar} from '@/components/booking/booking-calendar';
 import {TimeSlots} from '@/components/booking/time-slots';
 import {Button} from '@/components/ui/button';
-import {Field, FieldDescription, FieldError, FieldLabel} from '../ui/field';
 import {Form, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
 
-type FormData = {
-  name: string;
-  email: string;
-  phone: string;
-};
-
-const EMPTY_FORM: FormData = {name: '', email: '', phone: ''};
 
 function formatDate(date: Date) {
-  return new Intl.DateTimeFormat('pt-BR', {
+  return new Intl.DateTimeFormat('pt-PT', {
     weekday: 'long',
     day: '2-digit',
     month: 'long',
@@ -49,8 +38,8 @@ const formSchema = z.object({
 });
 
 export function BookingExperience() {
-  const [date, setDate] = useState<Date | null>(null);
-  const [slot, setSlot] = useState<string | null>(null);
+  const [date, setDate] = useState<Date>();
+  const [slot, setSlot] = useState<string>();
   const [confirmed, setConfirmed] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -66,8 +55,16 @@ export function BookingExperience() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
 
+    if (!date || !slot) {
+      return;
+    }
+
     try {
-      const user = await createOrGetUser(data);
+      const user = await createBooking({
+        form: data,
+        date: date,
+        slot: slot,
+      });
 
       console.log(user);
     } catch (error) {
@@ -75,14 +72,14 @@ export function BookingExperience() {
     } finally {
       setConfirmed(true);
       setLoading(false);
-      form.reset();
     }
   };
 
   function resetBooking() {
-    setDate(null);
-    setSlot(null);
+    setDate(undefined);
+    setSlot(undefined);
     setConfirmed(false);
+    form.reset();
   }
 
   if (confirmed && date && slot) {
@@ -114,7 +111,11 @@ export function BookingExperience() {
               </span>
             </div>
           </div>
-          <Button onClick={resetBooking} className="mt-6 w-full" size="lg">
+          <Button
+            onClick={resetBooking}
+            className="mt-6 w-full"
+            size="lg"
+          >
             Fazer novo agendamento
           </Button>
         </div>
@@ -166,7 +167,7 @@ export function BookingExperience() {
                 selected={date}
                 onSelect={d => {
                   setDate(d);
-                  setSlot(null);
+                  setSlot(undefined);
                 }}
               />
             </section>
@@ -181,13 +182,13 @@ export function BookingExperience() {
               <TimeSlots
                 selected={slot}
                 onSelect={setSlot}
-                disabled={date === null}
+                date={date}
               />
             </section>
           </div>
 
           {/* Right column: form */}
-          <section className="flex flex-col rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6">
+          <section className="flex flex-col rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6 h-fit">
             <div className="mb-4 flex items-center gap-2">
               <User className="size-5 text-primary" />
               <h2 className="font-heading text-lg font-semibold text-foreground">
@@ -261,60 +262,6 @@ export function BookingExperience() {
                   </FormItem>
                 )}
               />
-              {/* <Controller
-              name="name"
-              control={form.control}
-              render={({field, fieldState}) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Bug Title</FieldLabel>
-                  <Input
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Login button not working on mobile"
-                    autoComplete="off"
-                  />
-                  <FieldDescription>
-                    Provide a concise title for your bug report.
-                  </FieldDescription>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            /> */}
-              {/* {FIELDS.map(field => {
-              const Icon = field.icon;
-              return (
-                <div key={field.key} className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor={field.key}
-                    className="text-sm font-medium text-foreground"
-                  >
-                    {field.label}
-                  </label>
-                  <div className="relative">
-                    <Icon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                    <input
-                      id={field.key}
-                      name={field.key}
-                      type={field.type}
-                      required
-                      autoComplete={field.autoComplete}
-                      placeholder={field.placeholder}
-                      value={form[field.key]}
-                      onChange={e =>
-                        setForm(prev => ({
-                          ...prev,
-                          [field.key]: e.target.value,
-                        }))
-                      }
-                      className="w-full rounded-xl border border-input bg-background py-2.5 pl-9 pr-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                    />
-                  </div>
-                </div>
-              );
-            })} */}
             </div>
 
             {/* Summary */}
@@ -322,7 +269,7 @@ export function BookingExperience() {
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Resumo
               </p>
-              <p className="mt-1 text-sm font-medium capitalize text-foreground">
+              <p className="mt-1 text-sm font-medium text-foreground">
                 {date ? formatDate(date) : 'Data não selecionada'}
               </p>
               <p className="text-sm text-muted-foreground">
@@ -337,6 +284,7 @@ export function BookingExperience() {
               size="lg"
               className="mt-5 w-full"
               isLoading={loading}
+              disabled={!date || !slot}
             >
               Confirmar agendamento
             </Button>

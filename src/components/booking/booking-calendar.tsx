@@ -35,7 +35,7 @@ function startOfDay(date: Date) {
 }
 
 type BookingCalendarProps = {
-  selected: Date | null;
+  selected?: Date;
   onSelect: (date: Date) => void;
 };
 

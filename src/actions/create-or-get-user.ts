@@ -2,7 +2,7 @@
 
 import prisma from '@/lib/prisma';
 
-type CreateUserInput = {
+export type CreateUserInput = {
   name: string;
   email: string;
   phone: string;
@@ -10,6 +10,17 @@ type CreateUserInput = {
 
 export async function createOrGetUser(data: CreateUserInput) {
   try {
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+
+    if (existingUser) {
+      console.log('[create-or-get-user] Getting existing user', existingUser);
+      return {success: true, user: existingUser};
+    }
+
     console.log('[create-or-get-user] Creating user with data', data);
     const newUser = await prisma.user.create({
       data,

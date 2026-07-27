@@ -53,7 +53,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="pt-BR"
+      lang="pt-PT"
       className={`${nunito.variable} ${poppins.variable} bg-background`}
     >
       <body className="font-sans antialiased">
