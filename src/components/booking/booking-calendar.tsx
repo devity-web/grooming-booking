@@ -57,6 +57,8 @@ export function BookingCalendar({selected, onSelect}: BookingCalendarProps) {
     cells.push(new Date(year, month, day));
   }
 
+  const canGoNext = year < today.getFullYear() || (year === today.getFullYear() && month < today.getMonth() + 3);
+
   const canGoPrev =
     year > today.getFullYear() ||
     (year === today.getFullYear() && month > today.getMonth());
@@ -83,8 +85,9 @@ export function BookingCalendar({selected, onSelect}: BookingCalendarProps) {
         <button
           type="button"
           onClick={() => changeMonth(1)}
+          disabled={!canGoNext}
           aria-label="Próximo mês"
-          className="flex size-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-secondary"
+          className="flex size-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-secondary disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ChevronRight className="size-5" />
         </button>
@@ -102,8 +105,16 @@ export function BookingCalendar({selected, onSelect}: BookingCalendarProps) {
       </div>
 
       <div className="grid grid-cols-7 gap-1">
-        {cells.map(date => {
-          if (!date) return <div key={`empty-${date}`} />;
+        {cells.map((date, i) => {
+          if (!date)
+            return (
+              <div
+                key={`empty-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: Placeholder
+                  i
+                }`}
+              />
+            );
 
           const isPast = date < today;
           const isSelected = selected ? isSameDay(date, selected) : false;

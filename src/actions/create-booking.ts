@@ -23,6 +23,7 @@ export async function createBooking(data: CreateBookingInput) {
       data: {
         userId: user.id,
         date: dateAndSlotToDate(data.date, data.slot),
+        status: 'confirmed',
       },
     });
 

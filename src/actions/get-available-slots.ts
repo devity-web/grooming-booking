@@ -1,8 +1,11 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import {delay} from '@/lib/utils';
 
 export async function getAvailableSlots(date: Date) {
+  await delay(2500);
+
   const dayBookings = await prisma.booking.findMany({
     where: {
       date: {

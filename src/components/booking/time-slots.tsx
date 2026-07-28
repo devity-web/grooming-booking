@@ -3,6 +3,7 @@
 import {useEffect, useState} from 'react';
 import {getAvailableSlots} from '@/actions/get-available-slots';
 import {cn} from '@/lib/utils';
+import {Skeleton} from '../ui/skeleton';
 
 // 1-hour slots from 09:00 to 18:00
 const SLOTS = Array.from({length: 9}, (_, i) => {
@@ -22,19 +23,18 @@ type TimeSlotsProps = {
   date?: Date;
 };
 
-export function TimeSlots({
-  selected,
-  onSelect,
-  date,
-}: TimeSlotsProps) {
+export function TimeSlots({selected, onSelect, date}: TimeSlotsProps) {
+  const [loading, setLoading] = useState(false);
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       if (date) {
+        setLoading(true);
         const response = await getAvailableSlots(date);
 
         setAvailableSlots(response);
+        setLoading(false);
       }
     };
 
@@ -47,6 +47,10 @@ export function TimeSlots({
         Selecione uma data para ver os horários disponíveis.
       </p>
     );
+  }
+
+  if (loading) {
+    return <TimeSlotsSkeleton />;
   }
 
   return (
@@ -75,6 +79,21 @@ export function TimeSlots({
           </button>
         );
       })}
+    </div>
+  );
+}
+
+function TimeSlotsSkeleton() {
+  return (
+    <div className="grid grid-cols-3 gap-2 sm:grid-cols-3">
+      {/* Render 9 empty grey blocks to match the 9 time slots */}
+      {Array.from({length: 9}).map((_, i) => (
+        <Skeleton
+          className="h-11.5 rounded-xl bg-muted/50 border border-border/50"
+          // biome-ignore lint/suspicious/noArrayIndexKey: No data
+          key={i}
+        />
+      ))}
     </div>
   );
 }

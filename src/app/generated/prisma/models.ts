@@ -10,4 +10,5 @@
  */
 export type * from './models/User'
 export type * from './models/Booking'
+export type * from './models/Service'
 export type * from './commonInputTypes'

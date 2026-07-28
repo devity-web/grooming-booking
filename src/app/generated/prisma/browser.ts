@@ -27,3 +27,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type Booking = Prisma.BookingModel
+/**
+ * Model Service
+ * 
+ */
+export type Service = Prisma.ServiceModel

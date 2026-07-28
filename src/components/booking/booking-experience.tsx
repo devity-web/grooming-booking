@@ -33,7 +33,7 @@ function formatDate(date: Date) {
 
 const formSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
-  email: z.email().min(1, 'Email é obrigatório'),
+  email: z.email('Email inválido'),
   phone: z.string().min(1, 'Telefone é obrigatório'),
 });
 
@@ -208,7 +208,7 @@ export function BookingExperience() {
                     <div className="relative">
                       <UserPen className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                       <Input
-                        className="py-2.5 pl-9 pr-3"
+                        className="pl-9"
                         placeholder="O teu nome aqui"
                         {...field}
                       />
