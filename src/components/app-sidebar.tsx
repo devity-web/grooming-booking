@@ -1,6 +1,12 @@
 'use client';
 
-import {Calendar, LayoutDashboardIcon, PawPrint, TowelRack} from 'lucide-react';
+import {
+  Calendar,
+  Dog,
+  LayoutDashboardIcon,
+  PawPrint,
+  TowelRack,
+} from 'lucide-react';
 import Link from 'next/link';
 import type * as React from 'react';
 import {NavMain} from '@/components/nav-main';
@@ -37,6 +43,11 @@ const data = {
       url: '/dashboard/services',
       icon: <TowelRack />,
     },
+    {
+      title: 'Bookings',
+      url: '/dashboard/bookings',
+      icon: <Dog />,
+    },
   ],
 };
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
@@ -59,7 +70,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

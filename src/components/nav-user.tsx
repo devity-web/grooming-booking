@@ -1,10 +1,8 @@
-"use client"
+'use client';
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import {useQuery} from '@tanstack/react-query';
+import {EllipsisVerticalIcon, LogOutIcon} from 'lucide-react';
+import {Avatar, AvatarFallback} from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,95 +11,96 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+} from '@/components/ui/sidebar';
+import {createClient} from '@/lib/supabase/client';
+import {NavUserSkeleton} from './nav-user-skeleton';
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
+export function NavUser() {
+  const client = createClient();
+  const {isMobile} = useSidebar();
+  const {data, isLoading} = useQuery({
+    queryKey: ['auth', 'user'],
+    queryFn: async () => {
+      const {data, error} = await client.auth.getSession();
+
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    },
+  });
+
+  const user = data?.session?.user;
+
+  if (isLoading) {
+    return <NavUserSkeleton />;
   }
-}) {
-  const { isMobile } = useSidebar()
+
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />
-            }
-          >
-            <Avatar className="size-8 rounded-lg grayscale">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-            </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user.name}</span>
-              <span className="truncate text-xs text-foreground/70">
-                {user.email}
-              </span>
-            </div>
-            <EllipsisVerticalIcon className="ml-auto size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="min-w-56"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
-            sideOffset={4}
-          >
-            <DropdownMenuGroup>
-              <DropdownMenuLabel className="p-0 font-normal">
-                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  <Avatar className="size-8">
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                  </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{user.name}</span>
-                    <span className="truncate text-xs text-muted-foreground">
-                      {user.email}
-                    </span>
+    user && (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <SidebarMenuButton
+                  size="lg"
+                  className="aria-expanded:bg-muted"
+                />
+              }
+            >
+              <Avatar className="size-8 rounded-lg grayscale">
+                <AvatarFallback className="rounded-lg">
+                  {user.email?.substring(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-medium">Admin</span>
+                <span className="truncate text-xs text-foreground/70">
+                  {user.email}
+                </span>
+              </div>
+              <EllipsisVerticalIcon className="ml-auto size-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="min-w-56"
+              side={isMobile ? 'bottom' : 'right'}
+              align="end"
+              sideOffset={4}
+            >
+              <DropdownMenuGroup>
+                <DropdownMenuLabel className="p-0 font-normal">
+                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                    <Avatar className="size-8">
+                      <AvatarFallback className="rounded-lg">
+                        {user.email?.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-medium">Admin</span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {user.email}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </DropdownMenuLabel>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+                </DropdownMenuLabel>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <CircleUserRoundIcon
-                />
-                Account
+                <LogOutIcon />
+                Log out
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon
-                />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon
-                />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOutIcon
-              />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
-  )
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    )
+  );
 }

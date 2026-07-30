@@ -2,6 +2,7 @@ import {Analytics} from '@vercel/analytics/next';
 import type {Metadata, Viewport} from 'next';
 import {Nunito, Poppins} from 'next/font/google';
 import './globals.css';
+import {Toaster} from '@/components/ui/sonner';
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -57,6 +58,7 @@ export default function RootLayout({
       className={`${nunito.variable} ${poppins.variable} bg-background`}
     >
       <body className="font-sans antialiased">
+        <Toaster />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

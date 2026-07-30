@@ -467,7 +467,7 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type ServiceGetPayload<S extends boolean | null | undefined | ServiceDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ServicePayload, S>
 
 export type ServiceCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ServiceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<ServiceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: ServiceCountAggregateInputType | true
   }
 
@@ -910,6 +910,7 @@ export type ServiceFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter, which Service to fetch.
    */
   where: Prisma.ServiceWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -928,6 +929,7 @@ export type ServiceFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extension
    * Filter, which Service to fetch.
    */
   where: Prisma.ServiceWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -976,6 +978,7 @@ export type ServiceFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter by unique combinations of Services.
    */
   distinct?: Prisma.ServiceScalarFieldEnum | Prisma.ServiceScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1024,6 +1027,7 @@ export type ServiceFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    * Filter by unique combinations of Services.
    */
   distinct?: Prisma.ServiceScalarFieldEnum | Prisma.ServiceScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1072,6 +1076,7 @@ export type ServiceFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter by unique combinations of Services.
    */
   distinct?: Prisma.ServiceScalarFieldEnum | Prisma.ServiceScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1090,6 +1095,7 @@ export type ServiceCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * The data needed to create a Service.
    */
   data: Prisma.XOR<Prisma.ServiceCreateInput, Prisma.ServiceUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1142,6 +1148,7 @@ export type ServiceUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Choose, which Service to update.
    */
   where: Prisma.ServiceWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1212,6 +1219,7 @@ export type ServiceUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * In case the Service was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.ServiceUpdateInput, Prisma.ServiceUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1230,6 +1238,7 @@ export type ServiceDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Filter which Service to delete.
    */
   where: Prisma.ServiceWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
