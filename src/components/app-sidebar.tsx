@@ -1,23 +1,6 @@
 'use client';
 
-import {
-  CameraIcon,
-  ChartBarIcon,
-  CircleHelpIcon,
-  CommandIcon,
-  DatabaseIcon,
-  FileChartColumnIcon,
-  FileIcon,
-  FileTextIcon,
-  FolderIcon,
-  LayoutDashboardIcon,
-  ListIcon,
-  PawPrint,
-  SearchIcon,
-  Settings2Icon,
-  TowelRack,
-  UsersIcon,
-} from 'lucide-react';
+import {Calendar, LayoutDashboardIcon, PawPrint, TowelRack} from 'lucide-react';
 import Link from 'next/link';
 import type * as React from 'react';
 import {NavMain} from '@/components/nav-main';
@@ -45,91 +28,14 @@ const data = {
       icon: <LayoutDashboardIcon />,
     },
     {
+      title: 'Calendar',
+      url: '/dashboard/calendar',
+      icon: <Calendar />,
+    },
+    {
       title: 'Services',
       url: '/dashboard/services',
       icon: <TowelRack />,
-    },
-  ],
-  navClouds: [
-    {
-      title: 'Capture',
-      icon: <CameraIcon />,
-      isActive: true,
-      url: '#',
-      items: [
-        {
-          title: 'Active Proposals',
-          url: '#',
-        },
-        {
-          title: 'Archived',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Proposal',
-      icon: <FileTextIcon />,
-      url: '#',
-      items: [
-        {
-          title: 'Active Proposals',
-          url: '#',
-        },
-        {
-          title: 'Archived',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Prompts',
-      icon: <FileTextIcon />,
-      url: '#',
-      items: [
-        {
-          title: 'Active Proposals',
-          url: '#',
-        },
-        {
-          title: 'Archived',
-          url: '#',
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: 'Settings',
-      url: '#',
-      icon: <Settings2Icon />,
-    },
-    {
-      title: 'Get Help',
-      url: '#',
-      icon: <CircleHelpIcon />,
-    },
-    {
-      title: 'Search',
-      url: '#',
-      icon: <SearchIcon />,
-    },
-  ],
-  documents: [
-    {
-      name: 'Data Library',
-      url: '#',
-      icon: <DatabaseIcon />,
-    },
-    {
-      name: 'Reports',
-      url: '#',
-      icon: <FileChartColumnIcon />,
-    },
-    {
-      name: 'Word Assistant',
-      url: '#',
-      icon: <FileIcon />,
     },
   ],
 };

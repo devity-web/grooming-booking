@@ -1,7 +1,12 @@
+'use client';
+
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import type {PropsWithChildren} from 'react';
 import {AppSidebar} from '@/components/app-sidebar';
 import {SiteHeader} from '@/components/site-header';
 import {SidebarInset, SidebarProvider} from '@/components/ui/sidebar';
+
+const queryClient = new QueryClient();
 
 export default function DashboardLayout({children}: PropsWithChildren) {
   return (
@@ -18,7 +23,9 @@ export default function DashboardLayout({children}: PropsWithChildren) {
         <SiteHeader />
         <div className="flex flex-1 flex-col p-4">
           <div className="@container/main flex flex-1 flex-col gap-2">
-            {children}
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
           </div>
         </div>
       </SidebarInset>

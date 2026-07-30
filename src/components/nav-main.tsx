@@ -2,7 +2,7 @@
 
 import {CirclePlusIcon, MailIcon} from 'lucide-react';
 import Link from 'next/link';
-import {useRouter} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
 import {Button} from '@/components/ui/button';
 import {
   SidebarGroup,
@@ -22,6 +22,8 @@ export function NavMain({
   }[];
 }) {
   const router = useRouter();
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -44,10 +46,11 @@ export function NavMain({
             </Button>
           </SidebarMenuItem>
         </SidebarMenu>
-        <SidebarMenu>
+        <SidebarMenu className="gap-1">
           {items.map(item => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
+                isActive={pathname === item.url}
                 onClick={() => router.push(item.url)}
                 tooltip={item.title}
               >
