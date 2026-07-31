@@ -2,6 +2,7 @@ import {Analytics} from '@vercel/analytics/next';
 import type {Metadata, Viewport} from 'next';
 import {Geist} from 'next/font/google';
 import './globals.css';
+import {ThemeProvider} from '@/components/theme-provider';
 import {Toaster} from '@/components/ui/sonner';
 
 const geist = Geist({
@@ -47,10 +48,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt" className={`${geist.variable} bg-background`}>
+    <html
+      suppressHydrationWarning
+      lang="pt"
+      className={`${geist.variable} bg-background`}
+    >
       <body className="font-sans antialiased">
-        <Toaster />
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

@@ -9,13 +9,13 @@ export function BookingLabel({status}: BookingLabelProps) {
   return (
     <>
       {status === 'pending' && (
-        <Badge variant="destructive">
+        <Badge className="font-bold" variant="destructive">
           <Clock /> Pending
         </Badge>
       )}
 
       {status === 'confirmed' && (
-        <Badge variant="secondary">
+        <Badge className="font-bold" variant="secondary">
           <CheckCircle /> Confirmed
         </Badge>
       )}

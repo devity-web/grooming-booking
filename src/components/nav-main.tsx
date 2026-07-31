@@ -1,9 +1,6 @@
 'use client';
 
-import {CirclePlusIcon, MailIcon} from 'lucide-react';
-import Link from 'next/link';
 import {usePathname, useRouter} from 'next/navigation';
-import {Button} from '@/components/ui/button';
 import {
   SidebarGroup,
   SidebarGroupContent,
