@@ -1,7 +1,6 @@
 'use client';
 
-import {useEffect, useState} from 'react';
-import {getAvailableSlots} from '@/actions/get-available-slots';
+import {useQuery} from '@tanstack/react-query';
 import {cn} from '@/lib/utils';
 import {Skeleton} from '../ui/skeleton';
 
@@ -24,22 +23,24 @@ type TimeSlotsProps = {
 };
 
 export function TimeSlots({selected, onSelect, date}: TimeSlotsProps) {
-  const [loading, setLoading] = useState(false);
-  const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+  const {data, isLoading} = useQuery({
+    queryKey: ['time-slots', date?.toISOString()],
+    queryFn: async (): Promise<string[]> => {
+      const response = await fetch(
+        `/api/time-slots?date=${
+          // biome-ignore lint/style/noNonNullAssertion: date is not null
+          encodeURIComponent(date!.toISOString())
+        }`,
+      );
 
-  useEffect(() => {
-    const fetchAvailableSlots = async () => {
-      if (date) {
-        setLoading(true);
-        const response = await getAvailableSlots(date);
-
-        setAvailableSlots(response);
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error('Failed to fetch time slots');
       }
-    };
 
-    fetchAvailableSlots();
-  }, [date]);
+      return response.json();
+    },
+    enabled: !!date,
+  });
 
   if (!date) {
     return (
@@ -49,36 +50,37 @@ export function TimeSlots({selected, onSelect, date}: TimeSlotsProps) {
     );
   }
 
-  if (loading) {
+  if (isLoading) {
     return <TimeSlotsSkeleton />;
   }
 
   return (
     <div className="grid grid-cols-3 gap-2 sm:grid-cols-3">
-      {SLOTS.map(slot => {
-        const isSelected = selected === slot.value;
-        const isDisabled = !availableSlots.includes(slot.value);
+      {data &&
+        SLOTS.map(slot => {
+          const isSelected = selected === slot.value;
+          const isDisabled = !data.includes(slot.value);
 
-        return (
-          <button
-            key={slot.value}
-            type="button"
-            onClick={() => onSelect(slot.value)}
-            aria-pressed={isSelected}
-            title={slot.range}
-            disabled={isDisabled}
-            className={cn(
-              'rounded-xl border px-2 py-3 text-sm font-semibold transition-colors',
-              isDisabled && 'cursor-not-allowed opacity-50',
-              isSelected
-                ? 'border-primary bg-primary text-primary-foreground'
-                : 'border-border bg-card text-foreground hover:border-primary/50 hover:bg-secondary',
-            )}
-          >
-            {slot.label}
-          </button>
-        );
-      })}
+          return (
+            <button
+              key={slot.value}
+              type="button"
+              onClick={() => onSelect(slot.value)}
+              aria-pressed={isSelected}
+              title={slot.range}
+              disabled={isDisabled}
+              className={cn(
+                'rounded-xl border px-2 py-3 text-sm font-semibold transition-colors',
+                isDisabled && 'cursor-not-allowed opacity-50',
+                isSelected
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border bg-card text-foreground hover:border-primary/50 hover:bg-secondary',
+              )}
+            >
+              {slot.label}
+            </button>
+          );
+        })}
     </div>
   );
 }

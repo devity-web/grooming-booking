@@ -18,6 +18,17 @@ const dateTimeFormat = new Intl.DateTimeFormat('pt-PT', {
   hour12: false, // Forces 24-hour clock
 });
 
-export function formatDate(date: Date | string) {
-  return dateTimeFormat.format(new Date(date));
+const dateFormat = new Intl.DateTimeFormat('pt-PT', {
+  weekday: 'long',
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric',
+});
+
+export function formatDate(date: Date | string, includeTime = true) {
+  if (includeTime) {
+    return dateTimeFormat.format(new Date(date));
+  }
+
+  return dateFormat.format(new Date(date));
 }

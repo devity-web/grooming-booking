@@ -7,6 +7,7 @@ type CreateBookingInput = {
   form: CreateUserInput;
   date: Date;
   slot: string;
+  service: string;
 };
 
 export async function createBooking(data: CreateBookingInput) {
@@ -24,6 +25,7 @@ export async function createBooking(data: CreateBookingInput) {
         userId: user.id,
         date: dateAndSlotToDate(data.date, data.slot),
         status: 'confirmed',
+        serviceId: data.service,
       },
     });
 

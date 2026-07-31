@@ -7,6 +7,7 @@ import {
   Clock,
   Mail,
   PawPrint,
+  Scissors,
   User,
   UserPen,
 } from 'lucide-react';
@@ -18,23 +19,16 @@ import {createBooking} from '@/actions/create-booking';
 import {BookingCalendar} from '@/components/booking/booking-calendar';
 import {TimeSlots} from '@/components/booking/time-slots';
 import {Button} from '@/components/ui/button';
+import {formatDate} from '@/lib/utils';
 import {Form, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
-
-
-function formatDate(date: Date) {
-  return new Intl.DateTimeFormat('pt-PT', {
-    weekday: 'long',
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  }).format(date);
-}
+import {ServicesSelect} from './services-select';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
   email: z.email('Email inválido'),
   phone: z.string().min(1, 'Telefone é obrigatório'),
+  service: z.uuid('Escolha um serviço'),
 });
 
 export function BookingExperience() {
@@ -61,9 +55,14 @@ export function BookingExperience() {
 
     try {
       const user = await createBooking({
-        form: data,
+        form: {
+          email: data.email,
+          name: data.name,
+          phone: data.phone,
+        },
         date: date,
         slot: slot,
+        service: data.service,
       });
 
       console.log(user);
@@ -101,7 +100,7 @@ export function BookingExperience() {
             <div className="flex items-center gap-3">
               <CalendarDays className="size-5 shrink-0 text-primary" />
               <span className="text-sm font-medium capitalize text-foreground">
-                {formatDate(date)}
+                {formatDate(date, false)}
               </span>
             </div>
             <div className="flex items-center gap-3">
@@ -111,11 +110,7 @@ export function BookingExperience() {
               </span>
             </div>
           </div>
-          <Button
-            onClick={resetBooking}
-            className="mt-6 w-full"
-            size="lg"
-          >
+          <Button onClick={resetBooking} className="mt-6 w-full" size="lg">
             Fazer novo agendamento
           </Button>
         </div>
@@ -179,11 +174,7 @@ export function BookingExperience() {
                   2. Escolha o horário
                 </h2>
               </div>
-              <TimeSlots
-                selected={slot}
-                onSelect={setSlot}
-                date={date}
-              />
+              <TimeSlots selected={slot} onSelect={setSlot} date={date} />
             </section>
           </div>
 
@@ -197,6 +188,24 @@ export function BookingExperience() {
             </div>
 
             <div className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="service"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel className="text-right font-medium text-foreground">
+                      Serviço
+                    </FormLabel>
+                    <div className="relative">
+                      <Scissors className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                      <ServicesSelect onChange={field.onChange} />
+                    </div>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="name"
@@ -270,7 +279,7 @@ export function BookingExperience() {
                 Resumo
               </p>
               <p className="mt-1 text-sm font-medium text-foreground">
-                {date ? formatDate(date) : 'Data não selecionada'}
+                {date ? formatDate(date, false) : 'Data não selecionada'}
               </p>
               <p className="text-sm text-muted-foreground">
                 {slot

@@ -2,6 +2,7 @@
 
 import {useQuery} from '@tanstack/react-query';
 import {CircleOff, MoreHorizontal, Trash} from 'lucide-react';
+import {BookingLabel} from '@/components/booking-label';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
 import {
@@ -49,6 +50,7 @@ export default function BookingsPage() {
                 <TableHead>#</TableHead>
                 <TableHead>User</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead>Service</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Created at</TableHead>
                 <TableHead></TableHead>
@@ -91,7 +93,10 @@ export default function BookingsPage() {
                   </TableCell>
                   <TableCell>{booking.user.name}</TableCell>
                   <TableCell>{formatDate(booking.date)}</TableCell>
-                  <TableCell>{booking.status}</TableCell>
+                  <TableCell>{booking.service.name}</TableCell>
+                  <TableCell>
+                    <BookingLabel status={booking.status} />
+                  </TableCell>
                   <TableCell>{formatDate(booking.createdAt)}</TableCell>
                   <TableCell>
                     <DropdownMenu>

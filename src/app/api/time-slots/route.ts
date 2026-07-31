@@ -1,16 +1,26 @@
-'use server';
-
+import {type NextRequest, NextResponse} from 'next/server';
 import prisma from '@/lib/prisma';
 import {delay} from '@/lib/utils';
 
-export async function getAvailableSlots(date: Date) {
+export async function GET(req: NextRequest) {
   await delay(1000);
+
+  const date = req.nextUrl.searchParams.get('date');
+
+  if (!date) {
+    return NextResponse.json(
+      {message: 'Missing date from query'},
+      {status: 400},
+    );
+  }
+
+  const dateValue = new Date(date.toString());
 
   const dayBookings = await prisma.booking.findMany({
     where: {
       date: {
-        gte: new Date(date.setHours(0, 0, 0, 0)),
-        lt: new Date(date.setHours(23, 59, 59, 999)),
+        gte: new Date(dateValue.setHours(0, 0, 0, 0)),
+        lt: new Date(dateValue.setHours(23, 59, 59, 999)),
       },
     },
   });
@@ -27,5 +37,5 @@ export async function getAvailableSlots(date: Date) {
 
   const availableSlots = allSlots.filter(slot => !bookedSlots.includes(slot));
 
-  return availableSlots;
+  return NextResponse.json(availableSlots);
 }

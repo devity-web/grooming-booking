@@ -1,18 +1,12 @@
 import {Analytics} from '@vercel/analytics/next';
 import type {Metadata, Viewport} from 'next';
-import {Nunito, Poppins} from 'next/font/google';
+import {Geist} from 'next/font/google';
 import './globals.css';
 import {Toaster} from '@/components/ui/sonner';
 
-const nunito = Nunito({
+const geist = Geist({
   subsets: ['latin'],
-  variable: '--font-nunito',
-});
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['500', '600', '700'],
-  variable: '--font-poppins',
+  variable: '--font-geist',
 });
 
 export const metadata: Metadata = {
@@ -53,10 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="pt-PT"
-      className={`${nunito.variable} ${poppins.variable} bg-background`}
-    >
+    <html lang="pt" className={`${geist.variable} bg-background`}>
       <body className="font-sans antialiased">
         <Toaster />
         {children}

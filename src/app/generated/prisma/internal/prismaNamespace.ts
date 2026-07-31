@@ -703,6 +703,7 @@ export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof Re
 export const BookingScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  serviceId: 'serviceId',
   date: 'date',
   status: 'status',
   createdAt: 'createdAt',
