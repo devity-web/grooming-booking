@@ -60,7 +60,7 @@ function Button({
       {isLoading ? (
         <>
           <Spinner />
-          Loading
+          {size !== 'icon' && 'Loading'}
         </>
       ) : (
         props.children

@@ -13,10 +13,10 @@ import {
 } from '@/components/ui/table';
 import prisma from '@/lib/prisma';
 
-export default function BookingsPage() {
+export default function AppointmentsPage() {
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Bookings</h1>
+      <h1 className="text-2xl font-bold tracking-tight">Appointments</h1>
       <Card className="mt-4">
         <CardContent>
           <Table>
@@ -54,7 +54,7 @@ export default function BookingsPage() {
 }
 
 async function BookingsTableBody() {
-  const bookings = await prisma.booking.findMany({
+  const bookings = await prisma.appointment.findMany({
     include: {
       user: true,
       service: true,
@@ -72,11 +72,11 @@ async function BookingsTableBody() {
             <div className="flex flex-col items-center justify-center gap-4 py-16">
               <CircleOff className="h-16 w-16 text-muted-foreground" />
               <div className="space-y-1 text-center">
-                <h3 className="text-xl font-bold">No Bookings</h3>
+                <h3 className="text-xl font-bold">No Appointments</h3>
                 <p className="text-sm text-muted-foreground">
-                  It looks like you don't have any bookings yet.
+                  It looks like you don't have any appointments yet.
                   <br />
-                  Get started by sharing the booking URL with your customers.
+                  Get started by sharing the appointment URL with your customers.
                 </p>
               </div>
             </div>

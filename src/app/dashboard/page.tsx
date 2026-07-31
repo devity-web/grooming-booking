@@ -7,13 +7,13 @@ import {Spinner} from '@/components/ui/spinner';
 import prisma from '@/lib/prisma';
 
 async function SectionCardsWrapper() {
-  const bookings = await prisma.booking.count();
+  const appointments = await prisma.appointment.count();
   const services = await prisma.service.count();
   const customers = await prisma.user.count();
 
   return (
     <SectionCards
-      bookings={bookings}
+      appointments={appointments}
       customers={customers}
       services={services}
     />
@@ -21,7 +21,7 @@ async function SectionCardsWrapper() {
 }
 
 async function PendingTableWrapper() {
-  const bookings = await prisma.booking.findMany({
+  const appointments = await prisma.appointment.findMany({
     where: {
       status: 'pending',
     },
@@ -31,7 +31,7 @@ async function PendingTableWrapper() {
     },
   });
 
-  return <PendingTable bookings={bookings} />;
+  return <PendingTable appointments={appointments} />;
 }
 
 function SectionCardsSkeleton() {

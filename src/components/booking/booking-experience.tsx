@@ -15,7 +15,7 @@ import Image from 'next/image';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
-import {createBooking} from '@/actions/create-booking';
+import {createAppointment} from '@/actions/create-appointment';
 import {BookingCalendar} from '@/components/booking/booking-calendar';
 import {TimeSlots} from '@/components/booking/time-slots';
 import {Button} from '@/components/ui/button';
@@ -54,7 +54,7 @@ export function BookingExperience() {
     }
 
     try {
-      const user = await createBooking({
+      const user = await createAppointment({
         form: {
           email: data.email,
           name: data.name,

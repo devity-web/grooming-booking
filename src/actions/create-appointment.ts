@@ -3,16 +3,16 @@
 import prisma from '@/lib/prisma';
 import {type CreateUserInput, createOrGetUser} from './create-or-get-user';
 
-type CreateBookingInput = {
+type createAppointmentInput = {
   form: CreateUserInput;
   date: Date;
   slot: string;
   service: string;
 };
 
-export async function createBooking(data: CreateBookingInput) {
+export async function createAppointment(data: createAppointmentInput) {
   try {
-    console.log('[create-booking] Creating booking with data', data);
+    console.log('[create-appointment] Creating appointment with data', data);
 
     const {user} = await createOrGetUser(data.form);
 
@@ -20,18 +20,17 @@ export async function createBooking(data: CreateBookingInput) {
       throw new Error('Falha ao criar usuário. Tente novamente.');
     }
 
-    const newBooking = await prisma.booking.create({
+    const appointment = await prisma.appointment.create({
       data: {
         userId: user.id,
         date: dateAndSlotToDate(data.date, data.slot),
-        status: 'confirmed',
         serviceId: data.service,
       },
     });
 
-    return {success: true, booking: newBooking};
+    return {success: true, appointment};
   } catch (error) {
-    console.error('[create-booking] Error creating booking', error);
+    console.error('[create-appointment] Error creating appointment', error);
     return {
       success: false,
       error: 'Falha ao criar agendamento. Tente novamente.',

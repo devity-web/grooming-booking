@@ -32,3 +32,9 @@ export function formatDate(date: Date | string, includeTime = true) {
 
   return dateFormat.format(new Date(date));
 }
+
+export const AppointmentStatus = {
+  PENDING: 'pending',
+  CONFIRMED: 'confirmed',
+  CANCELLED: 'cancelled',
+} as const;

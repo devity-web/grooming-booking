@@ -52,7 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Booking: 'Booking',
+  Appointment: 'Appointment',
   Service: 'Service'
 } as const
 
@@ -92,7 +92,7 @@ export const RelationLoadStrategy = {
 export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
 
 
-export const BookingScalarFieldEnum = {
+export const AppointmentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   serviceId: 'serviceId',
@@ -102,7 +102,7 @@ export const BookingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
 
 
 export const ServiceScalarFieldEnum = {

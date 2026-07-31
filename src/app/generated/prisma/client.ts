@@ -47,10 +47,10 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
- * Model Booking
+ * Model Appointment
  * 
  */
-export type Booking = Prisma.BookingModel
+export type Appointment = Prisma.AppointmentModel
 /**
  * Model Service
  * 

@@ -1,6 +1,10 @@
+'use client';
+
 import {Check} from 'lucide-react';
+import {useState, useTransition} from 'react';
+import {confirmAppointment} from '@/actions/dashboard/confirm-appointment';
 import {formatDate} from '@/lib/utils';
-import type {Booking} from '@/types/booking';
+import type {Appointment} from '@/types/appointment';
 import {BookingLabel} from './booking-label';
 import {Button} from './ui/button';
 import {
@@ -20,50 +24,67 @@ import {
 } from './ui/table';
 
 interface PendingTableProps {
-  bookings: Booking[];
+  appointments: Appointment[];
 }
 
-export function PendingTable({bookings}: PendingTableProps) {
+export function PendingTable({appointments}: PendingTableProps) {
+  const [isPending, startTransition] = useTransition();
+  const [currentId, setCurrentId] = useState<string>();
+
+  const handleConfirm = (id: string) => {
+    setCurrentId(id);
+    startTransition(async () => {
+      await confirmAppointment(id);
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Review pending</CardTitle>
         <CardDescription>
-          You currently have {bookings.length} pending bookings
+          You currently have {appointments.length} pending appointments
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Customer</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Service</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created at</TableHead>
-              <TableHead></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {bookings.map(booking => (
-              <TableRow key={booking.id}>
-                <TableCell>{booking.user.name}</TableCell>
-                <TableCell>{formatDate(booking.date)}</TableCell>
-                <TableCell>{booking.service.name}</TableCell>
-                <TableCell>
-                  <BookingLabel status={booking.status} />
-                </TableCell>
-                <TableCell>{formatDate(booking.createdAt)}</TableCell>
-                <TableCell>
-                  <Button size="icon">
-                    <Check />
-                  </Button>
-                </TableCell>
+
+      {appointments.length > 0 && (
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Customer</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Service</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Created at</TableHead>
+                <TableHead></TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
+            </TableHeader>
+            <TableBody>
+              {appointments.map(appointment => (
+                <TableRow key={appointment.id}>
+                  <TableCell>{appointment.user.name}</TableCell>
+                  <TableCell>{formatDate(appointment.date)}</TableCell>
+                  <TableCell>{appointment.service.name}</TableCell>
+                  <TableCell>
+                    <BookingLabel status={appointment.status} />
+                  </TableCell>
+                  <TableCell>{formatDate(appointment.createdAt)}</TableCell>
+                  <TableCell>
+                    <Button
+                      isLoading={isPending && currentId === appointment.id}
+                      onClick={() => handleConfirm(appointment.id)}
+                      size="icon"
+                    >
+                      <Check />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      )}
     </Card>
   );
 }

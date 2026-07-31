@@ -1,3 +1,5 @@
+import {WeekCalendar} from '@/components/week-calendar';
+
 export default function CalendarPage() {
-  return <h1>CAlendar</h1>;
+  return <WeekCalendar />;
 }

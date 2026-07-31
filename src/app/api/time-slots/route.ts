@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
 
   const dateValue = new Date(date.toString());
 
-  const dayBookings = await prisma.booking.findMany({
+  const dayAppointments = await prisma.appointment.findMany({
     where: {
       date: {
         gte: new Date(dateValue.setHours(0, 0, 0, 0)),
@@ -25,9 +25,9 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  const bookedSlots = dayBookings.map(booking => {
-    const bookingDate = new Date(booking.date);
-    return `${String(bookingDate.getHours()).padStart(2, '0')}:00`;
+  const bookedSlots = dayAppointments.map(appointments => {
+    const appointmentDate = new Date(appointments.date);
+    return `${String(appointmentDate.getHours()).padStart(2, '0')}:00`;
   });
 
   const allSlots = Array.from({length: 9}, (_, i) => {

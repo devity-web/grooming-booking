@@ -2,7 +2,7 @@
 
 import {MoreHorizontal, Trash} from 'lucide-react';
 import {formatDate} from '@/lib/utils';
-import type {Booking} from '@/types/booking';
+import type {Appointment} from '@/types/appointment';
 import {BookingLabel} from '../booking-label';
 import {Button} from '../ui/button';
 import {
@@ -15,7 +15,7 @@ import {
 } from '../ui/dropdown-menu';
 import {TableCell, TableRow} from '../ui/table';
 
-export function BookingRow({booking}: {booking: Booking}) {
+export function BookingRow({booking}: {booking: Appointment}) {
   return (
     <TableRow key={booking.id}>
       <TableCell className="font-bold">{booking.id.slice(0, 8)}</TableCell>

@@ -44,8 +44,8 @@ const data = {
       icon: <TowelRack />,
     },
     {
-      title: 'Bookings',
-      url: '/dashboard/bookings',
+      title: 'Appointments',
+      url: '/dashboard/appointments',
       icon: <Dog />,
     },
   ],

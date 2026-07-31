@@ -2,13 +2,13 @@ import {Calendar, Scissors, Users} from 'lucide-react';
 import {Card, CardContent, CardHeader} from './ui/card';
 
 interface SectionCardsProps {
-  bookings: number;
+  appointments: number;
   services: number;
   customers: number;
 }
 
 export function SectionCards({
-  bookings,
+  appointments,
   customers,
   services,
 }: SectionCardsProps) {
@@ -19,10 +19,10 @@ export function SectionCards({
           <div className="bg-primary/10 text-primary flex size-8 shrink-0 items-center justify-center rounded-sm">
             <Calendar />
           </div>
-          <span className="text-2xl">{bookings}</span>
+          <span className="text-2xl">{appointments}</span>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
-          <span className="text-base font-semibold">Bookings</span>
+          <span className="text-base font-semibold">Appointments</span>
           {/* <p className="space-x-2">
             <span>{changePercentage}</span>
             <span className="text-muted-foreground">than last week</span>
