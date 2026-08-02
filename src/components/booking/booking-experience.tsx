@@ -12,7 +12,7 @@ import {
   UserPen,
 } from 'lucide-react';
 import Image from 'next/image';
-import {useState} from 'react';
+import {Suspense, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {createAppointment} from '@/actions/create-appointment';
@@ -158,13 +158,15 @@ export function BookingExperience() {
                   1. Escolha a data
                 </h2>
               </div>
-              <BookingCalendar
-                selected={date}
-                onSelect={d => {
-                  setDate(d);
-                  setSlot(undefined);
-                }}
-              />
+              <Suspense>
+                <BookingCalendar
+                  selected={date}
+                  onSelect={d => {
+                    setDate(d);
+                    setSlot(undefined);
+                  }}
+                />
+              </Suspense>
             </section>
 
             <section className="rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6">

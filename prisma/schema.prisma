@@ -20,7 +20,7 @@ model User {
   phone        String
   appointments Appointment[]
   createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  updatedAt    DateTime      @default(now()) @updatedAt
 }
 
 model Appointment {
@@ -32,7 +32,7 @@ model Appointment {
   date      DateTime
   status    String   @default("pending")
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Service {
@@ -42,6 +42,6 @@ model Service {
   price        Float
   isActive     Boolean       @default(true)
   createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  updatedAt    DateTime      @default(now()) @updatedAt
   appointments Appointment[]
 }

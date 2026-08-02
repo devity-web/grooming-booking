@@ -18,10 +18,16 @@ const dateTimeFormat = new Intl.DateTimeFormat('pt-PT', {
   hour12: false, // Forces 24-hour clock
 });
 
-const dateFormat = new Intl.DateTimeFormat('pt-PT', {
+const longDateFormat = new Intl.DateTimeFormat('pt-PT', {
   weekday: 'long',
   day: '2-digit',
   month: 'long',
+  year: 'numeric',
+});
+
+export const dateFormat = new Intl.DateTimeFormat('pt-PT', {
+  day: '2-digit',
+  month: '2-digit',
   year: 'numeric',
 });
 
@@ -30,7 +36,7 @@ export function formatDate(date: Date | string, includeTime = true) {
     return dateTimeFormat.format(new Date(date));
   }
 
-  return dateFormat.format(new Date(date));
+  return longDateFormat.format(new Date(date));
 }
 
 export const AppointmentStatus = {

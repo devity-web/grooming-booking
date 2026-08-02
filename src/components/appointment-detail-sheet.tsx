@@ -10,14 +10,8 @@ import {
   X,
 } from 'lucide-react';
 import {useEffect} from 'react';
-import {
-  type Appointment,
-  formatMinutes,
-  SERVICE_META,
-  WEEKDAY_LABELS_FULL,
-} from '@/lib/appointments';
 import {cn} from '@/lib/utils';
-import {serviceStyles} from './appointment-block';
+import type {Appointment} from '@/types/appointment';
 
 const STATUS_META: Record<
   Appointment['status'],
@@ -93,9 +87,7 @@ function AppointmentDetailContent({
   appointment: Appointment;
   onClose: () => void;
 }) {
-  const styles = serviceStyles(appointment.service);
   const status = STATUS_META[appointment.status];
-  const end = appointment.start + appointment.duration;
 
   return (
     <>
@@ -103,20 +95,16 @@ function AppointmentDetailContent({
         <div className="flex items-center gap-3">
           <span
             className={cn(
-              'flex size-11 items-center justify-center rounded-full',
-              styles.bg,
-              styles.text,
+              'flex size-11 items-center justify-center rounded-full bg-red-300',
             )}
           >
             <PawPrint className="size-5" strokeWidth={2.5} />
           </span>
           <div>
             <h2 className="font-display text-xl font-extrabold leading-tight text-foreground">
-              {appointment.petName}
+              PET NAME
             </h2>
-            <p className="text-sm text-muted-foreground">
-              {appointment.petBreed}
-            </p>
+            <p className="text-sm text-muted-foreground">PET BREED</p>
           </div>
         </div>
         <button
@@ -142,38 +130,32 @@ function AppointmentDetailContent({
         <DetailRow icon={Scissors} label="Serviço">
           <span className="flex items-center gap-2">
             <span
-              className={cn('size-2.5 rounded-full', styles.bar)}
+              className={cn('size-2.5 rounded-full bg-red-600')}
               aria-hidden="true"
             />
-            {SERVICE_META[appointment.service].label}
+            SERVICE META LABEL
           </span>
         </DetailRow>
 
         <DetailRow icon={CalendarDays} label="Dia">
-          {WEEKDAY_LABELS_FULL[appointment.dayOffset]}
+          DAY OFFSET
         </DetailRow>
 
         <DetailRow icon={Clock} label="Horário">
-          {formatMinutes(appointment.start)} – {formatMinutes(end)}
-          <span className="text-muted-foreground">
-            {' '}
-            ({appointment.duration} min)
-          </span>
+          DURATION
         </DetailRow>
 
         <DetailRow icon={User} label="Tutor(a)">
-          {appointment.ownerName}
+          OWNER
         </DetailRow>
 
         <DetailRow icon={Scissors} label="Profissional">
-          {appointment.groomer}
+          GROOMER
         </DetailRow>
 
-        {appointment.notes && (
-          <DetailRow icon={StickyNote} label="Observações">
-            {appointment.notes}
-          </DetailRow>
-        )}
+        <DetailRow icon={StickyNote} label="Observações">
+          NOTES
+        </DetailRow>
       </div>
 
       <footer className="flex gap-3 border-t border-border p-5">

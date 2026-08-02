@@ -1,56 +1,9 @@
 'use client';
 
-import {Clock} from 'lucide-react';
-import {
-  type Appointment,
-  DAY_START_HOUR,
-  formatMinutes,
-  SERVICE_META,
-  type ServiceType,
-  SLOT_HEIGHT,
-} from '@/lib/appointments';
-import {cn} from '@/lib/utils';
-
-/** Static class maps so Tailwind can see every service variant at build time. */
-const SERVICE_STYLES: Record<
-  ServiceType,
-  {bar: string; bg: string; text: string; ring: string}
-> = {
-  bath: {
-    bar: 'bg-service-bath',
-    bg: 'bg-service-bath-bg',
-    text: 'text-service-bath-foreground',
-    ring: 'focus-visible:ring-service-bath',
-  },
-  fullgroom: {
-    bar: 'bg-service-fullgroom',
-    bg: 'bg-service-fullgroom-bg',
-    text: 'text-service-fullgroom-foreground',
-    ring: 'focus-visible:ring-service-fullgroom',
-  },
-  nails: {
-    bar: 'bg-service-nails',
-    bg: 'bg-service-nails-bg',
-    text: 'text-service-nails-foreground',
-    ring: 'focus-visible:ring-service-nails',
-  },
-  haircut: {
-    bar: 'bg-service-haircut',
-    bg: 'bg-service-haircut-bg',
-    text: 'text-service-haircut-foreground',
-    ring: 'focus-visible:ring-service-haircut',
-  },
-  deshed: {
-    bar: 'bg-service-deshed',
-    bg: 'bg-service-deshed-bg',
-    text: 'text-service-deshed-foreground',
-    ring: 'focus-visible:ring-service-deshed',
-  },
-};
-
-export function serviceStyles(service: ServiceType) {
-  return SERVICE_STYLES[service];
-}
+import {Clock, Scissors, User} from 'lucide-react';
+import {AppointmentStatus, cn} from '@/lib/utils';
+import {DAY_START_HOUR, SLOT_HEIGHT} from '@/lib/week';
+import type {Appointment} from '@/types/appointment';
 
 interface AppointmentBlockProps {
   appointment: Appointment;
@@ -63,10 +16,10 @@ export function AppointmentBlock({
   onSelect,
   isActive,
 }: AppointmentBlockProps) {
-  const styles = SERVICE_STYLES[appointment.service];
-  const top = ((appointment.start - DAY_START_HOUR * 60) / 60) * SLOT_HEIGHT;
-  const height = (appointment.duration / 60) * SLOT_HEIGHT;
-  const compact = height < 52;
+  const top =
+    ((appointment.date.getHours() * 60 - DAY_START_HOUR * 60) / 60) *
+    SLOT_HEIGHT;
+  const height = 1 * SLOT_HEIGHT;
 
   return (
     <button
@@ -74,44 +27,37 @@ export function AppointmentBlock({
       onClick={() => onSelect(appointment)}
       style={{top, height: height - 4}}
       className={cn(
-        'absolute inset-x-1 flex flex-col overflow-hidden rounded-lg border border-transparent px-2 py-1.5 text-left transition-all',
+        'bg-red-300 text-red-800 absolute inset-x-1 flex flex-col overflow-hidden rounded-lg border border-transparent px-2 py-1.5 text-left transition-all',
         'shadow-sm hover:z-20 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1',
-        styles.bg,
-        styles.text,
-        styles.ring,
         appointment.status === 'completed' && 'opacity-65',
         isActive && 'z-20 ring-2 ring-offset-1 ring-primary',
       )}
     >
       <span
-        className={cn(
-          'absolute inset-y-0 left-0 w-1.5 rounded-l-lg',
-          styles.bar,
-        )}
+        className={cn('absolute inset-y-0 left-0 w-1.5 rounded-l-lg bg-red-500')}
         aria-hidden="true"
       />
       <div className="flex items-center gap-1.5 pl-1.5">
-        <span className="truncate text-[13px] font-bold font-display leading-tight">
-          {appointment.petName}
+        <User className="size-3" strokeWidth={2.5} />
+        <span className="truncate text-[13px] font-medium leading-tight">
+          {appointment.user.name}
         </span>
-        {appointment.status === 'pending' && (
-          <span className="shrink-0 rounded-full bg-card/70 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide">
+      </div>
+
+      <div className="flex items-center gap-1.5 pl-1.5">
+        <Scissors className="size-3" strokeWidth={2.5} />
+        <span className="truncate text-[13px] font-medium leading-tight">
+          {appointment.service.name}
+        </span>
+      </div>
+
+      {appointment.status === AppointmentStatus.PENDING && (
+        <div className="flex items-center gap-1.5 pl-1.5">
+          <Clock className="size-3" strokeWidth={2.5} />
+          <span className="truncate text-[13px] font-bold leading-tight">
             Pendente
           </span>
-        )}
-      </div>
-      {!compact && (
-        <span className="truncate pl-1.5 text-[11px] font-medium leading-tight opacity-80">
-          {SERVICE_META[appointment.service].label}
-        </span>
-      )}
-      {height >= 70 && (
-        <span className="mt-auto flex items-center gap-1 pl-1.5 text-[10px] font-medium opacity-70">
-          <Clock className="size-3" strokeWidth={2.5} />
-          {formatMinutes(appointment.start)}
-          {' · '}
-          {appointment.groomer}
-        </span>
+        </div>
       )}
     </button>
   );

@@ -1,24 +1,21 @@
 'use client';
 
-import {ChevronLeft, ChevronRight, PawPrint, Plus} from 'lucide-react';
+import {ChevronLeft, ChevronRight} from 'lucide-react';
 import {useMemo, useState} from 'react';
+import {cn, dateFormat} from '@/lib/utils';
 import {
-  APPOINTMENTS,
-  type Appointment,
   addDays,
   DAY_END_HOUR,
   DAY_START_HOUR,
   formatMinutes,
   formatMonthRange,
   isSameDay,
-  SERVICE_META,
-  type ServiceType,
   SLOT_HEIGHT,
   startOfWeek,
   WEEKDAY_LABELS,
-} from '@/lib/appointments';
-import {cn} from '@/lib/utils';
-import {AppointmentBlock, serviceStyles} from './appointment-block';
+} from '@/lib/week';
+import type {Appointment} from '@/types/appointment';
+import {AppointmentBlock} from './appointment-block';
 import {AppointmentDetailSheet} from './appointment-detail-sheet';
 
 const HOURS = Array.from(
@@ -27,7 +24,7 @@ const HOURS = Array.from(
 );
 const GRID_HEIGHT = (DAY_END_HOUR - DAY_START_HOUR) * SLOT_HEIGHT;
 
-export function WeekCalendar() {
+export function WeekCalendar({appointments}: {appointments: Appointment[]}) {
   const [weekStart, setWeekStart] = useState(() => startOfWeek(new Date()));
   const [selected, setSelected] = useState<Appointment | null>(null);
   const today = new Date();
@@ -38,14 +35,8 @@ export function WeekCalendar() {
   );
 
   const byDay = useMemo(() => {
-    const map: Record<number, Appointment[]> = {};
-    for (const appt of APPOINTMENTS) {
-      (map[appt.dayOffset] ??= []).push(appt);
-    }
-    return map;
-  }, []);
-
-  const totalWeek = APPOINTMENTS.length;
+    return Object.groupBy(appointments, appt => dateFormat.format(appt.date));
+  }, [appointments]);
 
   function goToday() {
     setWeekStart(startOfWeek(new Date()));
@@ -61,7 +52,6 @@ export function WeekCalendar() {
     <div className="flex h-dvh flex-col bg-background">
       <Header
         weekStart={weekStart}
-        totalWeek={totalWeek}
         onPrev={() => setWeekStart(w => addDays(w, -7))}
         onNext={() => setWeekStart(w => addDays(w, 7))}
         onToday={goToday}
@@ -74,7 +64,7 @@ export function WeekCalendar() {
           const isToday = isSameDay(day, today);
           return (
             <div
-              key={i}
+              key={day.toISOString()}
               className={cn(
                 'flex flex-col items-center gap-0.5 border-r border-border py-2 last:border-r-0',
                 isToday && 'bg-primary/5',
@@ -124,15 +114,16 @@ export function WeekCalendar() {
           </div>
 
           {/* Day columns */}
-          {days.map((day, dayIndex) => {
+          {days.map(day => {
             const isToday = isSameDay(day, today);
-            const appts = byDay[dayIndex] ?? [];
+            const appts = byDay[dateFormat.format(day)] ?? [];
+
             return (
               <div
-                key={dayIndex}
+                key={day.toISOString()}
                 className={cn(
                   'relative border-r border-border last:border-r-0',
-                  isToday && 'bg-primary/[0.03]',
+                  isToday && 'bg-primary/3',
                 )}
                 style={{height: GRID_HEIGHT}}
               >
@@ -183,13 +174,11 @@ export function WeekCalendar() {
 
 function Header({
   weekStart,
-  totalWeek,
   onPrev,
   onNext,
   onToday,
 }: {
   weekStart: Date;
-  totalWeek: number;
   onPrev: () => void;
   onNext: () => void;
   onToday: () => void;
