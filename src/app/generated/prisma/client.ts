@@ -56,3 +56,8 @@ export type Appointment = Prisma.AppointmentModel
  * 
  */
 export type Service = Prisma.ServiceModel
+/**
+ * Model AuditLogs
+ * 
+ */
+export type AuditLogs = Prisma.AuditLogsModel

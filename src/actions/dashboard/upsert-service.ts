@@ -3,13 +3,18 @@
 import {revalidatePath} from 'next/cache';
 import prisma from '@/lib/prisma';
 
-export async function createService(data: {
+export async function upsertService(data: {
+  id?: string;
   name: string;
   description: string;
   price: number;
 }) {
   try {
-    const service = await prisma.service.create({data});
+    const service = await prisma.service.upsert({
+      where: {id: data.id ?? ''},
+      create: data,
+      update: data,
+    });
 
     revalidatePath('/dashboard/services');
 

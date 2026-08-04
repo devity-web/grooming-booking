@@ -2,7 +2,6 @@ import {CircleOff} from 'lucide-react';
 import {Suspense} from 'react';
 import {CreateServiceDialog} from '@/components/dashboard/create-service-dialog';
 import {ServiceRow} from '@/components/dashboard/service-row';
-import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
 import {Spinner} from '@/components/ui/spinner';
 import {
@@ -68,7 +67,7 @@ async function ServicesTableBody() {
     return (
       <TableBody>
         <TableRow>
-          <TableCell colSpan={5}>
+          <TableCell colSpan={6}>
             <div className="flex flex-col items-center justify-center gap-6 py-20">
               <CircleOff className="h-20 w-20 text-muted" />
               <div className="space-y-2 text-center">
@@ -78,7 +77,6 @@ async function ServicesTableBody() {
                   started by creating your first service.
                 </p>
               </div>
-              <Button>Create service</Button>
             </div>
           </TableCell>
         </TableRow>

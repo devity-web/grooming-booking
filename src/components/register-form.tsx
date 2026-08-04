@@ -3,7 +3,7 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import {IconBrandGoogleFilled} from '@tabler/icons-react';
 import {useMutation} from '@tanstack/react-query';
-import {usePathname, useRouter, useSearchParams} from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import z from 'zod';
@@ -13,41 +13,50 @@ import {Form, FormField, FormItem, FormLabel, FormMessage} from './ui/form';
 import {Input} from './ui/input';
 
 const formSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
   email: z.email('Email inválido'),
   password: z.string().min(1, 'A palavra-passe é obrigatória'),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-export function LoginForm() {
+export function RegisterForm() {
   const router = useRouter();
-  const params = useSearchParams();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
       password: '',
+      firstName: '',
+      lastName: '',
     },
   });
 
   const client = createClient();
   const {mutate, isPending} = useMutation({
-    mutationKey: ['auth', 'login'],
+    mutationKey: ['auth', 'signUp'],
     mutationFn: async (data: FormData) => {
-      const {error} = await client.auth.signInWithPassword(data);
+      const origin =
+        typeof window !== 'undefined' ? window.location.origin : '';
+      const {error} = await client.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          emailRedirectTo: `${origin}/auth/verify`,
+          data: {
+            first_name: data.firstName,
+            last_name: data.lastName,
+          },
+        },
+      });
 
       if (error) {
         throw error;
       }
     },
     onSuccess: () => {
-      const next = params.get('next');
-
-      if (next) {
-        return router.push(next);
-      }
-
-      return router.push('/dashboard');
+      router.push('/auth');
     },
     onError: e => toast.error(e.message),
   });
@@ -74,12 +83,42 @@ export function LoginForm() {
       {/* Email form */}
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Form {...form}>
-          <div className="flex flex-col gap-5">
+          <div className="grid grid-cols-2 gap-5">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel className="text-right font-medium text-foreground">
+                    First Name
+                  </FormLabel>
+                  <Input placeholder="John" {...field} />
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel className="text-right font-medium text-foreground">
+                    Last Name
+                  </FormLabel>
+                  <Input placeholder="Doe" {...field} />
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="email"
               render={({field}) => (
-                <FormItem>
+                <FormItem className="col-span-2">
                   <FormLabel className="text-right font-medium text-foreground">
                     E-mail
                   </FormLabel>
@@ -94,7 +133,7 @@ export function LoginForm() {
               control={form.control}
               name="password"
               render={({field}) => (
-                <FormItem>
+                <FormItem className="col-span-2">
                   <FormLabel className="text-right font-medium text-foreground">
                     Palavra-passe
                   </FormLabel>
@@ -109,8 +148,12 @@ export function LoginForm() {
               )}
             />
 
-            <Button isLoading={isPending} type="submit" className="h-11">
-              Entrar
+            <Button
+              isLoading={isPending}
+              type="submit"
+              className="h-11 col-span-2"
+            >
+              Register
             </Button>
           </div>
         </Form>

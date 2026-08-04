@@ -399,7 +399,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Appointment: 'Appointment',
-  Service: 'Service'
+  Service: 'Service',
+  AuditLogs: 'AuditLogs'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "appointment" | "service"
+    modelProps: "user" | "appointment" | "service" | "auditLogs"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -641,6 +642,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AuditLogs: {
+      payload: Prisma.$AuditLogsPayload<ExtArgs>
+      fields: Prisma.AuditLogsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AuditLogsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AuditLogsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload>
+        }
+        findFirst: {
+          args: Prisma.AuditLogsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AuditLogsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload>
+        }
+        findMany: {
+          args: Prisma.AuditLogsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload>[]
+        }
+        create: {
+          args: Prisma.AuditLogsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload>
+        }
+        createMany: {
+          args: Prisma.AuditLogsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AuditLogsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload>[]
+        }
+        delete: {
+          args: Prisma.AuditLogsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload>
+        }
+        update: {
+          args: Prisma.AuditLogsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload>
+        }
+        deleteMany: {
+          args: Prisma.AuditLogsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AuditLogsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AuditLogsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload>[]
+        }
+        upsert: {
+          args: Prisma.AuditLogsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AuditLogsPayload>
+        }
+        aggregate: {
+          args: Prisma.AuditLogsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAuditLogs>
+        }
+        groupBy: {
+          args: Prisma.AuditLogsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AuditLogsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AuditLogsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AuditLogsCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -726,6 +801,18 @@ export const ServiceScalarFieldEnum = {
 export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeof ServiceScalarFieldEnum]
 
 
+export const AuditLogsScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  model: 'model',
+  name: 'name',
+  email: 'email',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogsScalarFieldEnum = (typeof AuditLogsScalarFieldEnum)[keyof typeof AuditLogsScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -740,6 +827,14 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -964,6 +1059,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   appointment?: Prisma.AppointmentOmit
   service?: Prisma.ServiceOmit
+  auditLogs?: Prisma.AuditLogsOmit
 }
 
 /* Types for Logging */
