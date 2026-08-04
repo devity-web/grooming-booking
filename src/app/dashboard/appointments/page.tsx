@@ -1,6 +1,8 @@
-import {CircleOff} from 'lucide-react';
+import {IconLink} from '@tabler/icons-react';
 import {Suspense} from 'react';
 import {BookingRow} from '@/components/dashboard/booking-row';
+import {EmptyState} from '@/components/empty-state';
+import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
 import {Spinner} from '@/components/ui/spinner';
 import {
@@ -66,23 +68,20 @@ async function BookingsTableBody() {
 
   if (bookings.length === 0) {
     return (
-      <TableBody>
-        <TableRow>
-          <TableCell colSpan={7}>
-            <div className="flex flex-col items-center justify-center gap-4 py-16">
-              <CircleOff className="h-16 w-16 text-muted-foreground" />
-              <div className="space-y-1 text-center">
-                <h3 className="text-xl font-bold">No Appointments</h3>
-                <p className="text-sm text-muted-foreground">
-                  It looks like you don't have any appointments yet.
-                  <br />
-                  Get started by sharing the appointment URL with your customers.
-                </p>
-              </div>
-            </div>
-          </TableCell>
-        </TableRow>
-      </TableBody>
+      <EmptyState
+        span={7}
+        title="No appointments"
+        body={
+          <div className="flex flex-col items-center gap-2">
+            You have no appointments yet. Get started by sharing your
+            appointment link with your customers.
+            <Button>
+              <IconLink />
+              Share
+            </Button>
+          </div>
+        }
+      />
     );
   }
 

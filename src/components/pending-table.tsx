@@ -1,6 +1,6 @@
 'use client';
 
-import {Check} from 'lucide-react';
+import {IconCheck} from '@tabler/icons-react';
 import {useState, useTransition} from 'react';
 import {confirmAppointment} from '@/actions/dashboard/confirm-appointment';
 import {formatDate} from '@/lib/utils';
@@ -76,7 +76,7 @@ export function PendingTable({appointments}: PendingTableProps) {
                       onClick={() => handleConfirm(appointment.id)}
                       size="icon"
                     >
-                      <Check />
+                      <IconCheck />
                     </Button>
                   </TableCell>
                 </TableRow>

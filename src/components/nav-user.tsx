@@ -1,7 +1,8 @@
 'use client';
 
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {EllipsisVerticalIcon, LogOutIcon} from 'lucide-react';
+import {useRouter} from 'next/navigation';
 import {Avatar, AvatarFallback} from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -24,6 +25,8 @@ import {NavUserSkeleton} from './nav-user-skeleton';
 export function NavUser() {
   const client = createClient();
   const {isMobile} = useSidebar();
+  const router = useRouter();
+
   const {data, isLoading} = useQuery({
     queryKey: ['auth', 'user'],
     queryFn: async () => {
@@ -34,6 +37,19 @@ export function NavUser() {
       }
 
       return data;
+    },
+  });
+
+  const {mutate} = useMutation({
+    mutationFn: async () => {
+      const {error} = await client.auth.signOut();
+
+      if (error) {
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      router.push('/auth');
     },
   });
 
@@ -93,7 +109,7 @@ export function NavUser() {
                 </DropdownMenuLabel>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => mutate()}>
                 <LogOutIcon />
                 Log out
               </DropdownMenuItem>

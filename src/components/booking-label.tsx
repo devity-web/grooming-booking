@@ -1,4 +1,4 @@
-import {CheckCircle, Clock} from 'lucide-react';
+import {IconCircleCheck, IconClock} from '@tabler/icons-react';
 import {AppointmentStatus} from '@/lib/utils';
 import {Badge} from './ui/badge';
 
@@ -11,13 +11,13 @@ export function BookingLabel({status}: BookingLabelProps) {
     <>
       {status === AppointmentStatus.PENDING && (
         <Badge className="font-bold" variant="destructive">
-          <Clock /> Pending
+          <IconClock /> Pending
         </Badge>
       )}
 
       {status === AppointmentStatus.CONFIRMED && (
         <Badge className="font-bold" variant="secondary">
-          <CheckCircle /> Confirmed
+          <IconCircleCheck /> Confirmed
         </Badge>
       )}
     </>

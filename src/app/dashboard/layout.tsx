@@ -22,10 +22,8 @@ export default function DashboardLayout({children}: PropsWithChildren) {
         <AppSidebar variant="inset" />
         <SidebarInset>
           <SiteHeader />
-          <div className="flex flex-1 flex-col p-4">
-            <div className="@container/main flex flex-1 flex-col gap-2">
-              {children}
-            </div>
+          <div className="mx-auto w-full max-w-full p-6 md:max-w-6xl">
+            {children}
           </div>
         </SidebarInset>
       </SidebarProvider>

@@ -1,5 +1,6 @@
 import {CircleOff} from 'lucide-react';
 import {Suspense} from 'react';
+import {CreateServiceDialog} from '@/components/dashboard/create-service-dialog';
 import {ServiceRow} from '@/components/dashboard/service-row';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
@@ -17,7 +18,10 @@ import prisma from '@/lib/prisma';
 export default function ServicesPage() {
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Services</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold tracking-tight">Services</h1>
+        <CreateServiceDialog />
+      </div>
       <Card className="mt-4">
         <CardContent>
           <Table>
@@ -26,6 +30,7 @@ export default function ServicesPage() {
                 <TableHead>#</TableHead>
                 <TableHead>Nome</TableHead>
                 <TableHead>Descrição</TableHead>
+                <TableHead>Valor</TableHead>
                 <TableHead>Ativo</TableHead>
                 <TableHead className="w-12.5"></TableHead>
               </TableRow>
@@ -53,7 +58,11 @@ export default function ServicesPage() {
 }
 
 async function ServicesTableBody() {
-  const services = await prisma.service.findMany();
+  const services = await prisma.service.findMany({
+    orderBy: {
+      id: 'asc',
+    },
+  });
 
   if (services.length === 0) {
     return (

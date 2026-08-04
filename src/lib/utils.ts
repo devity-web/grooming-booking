@@ -31,6 +31,11 @@ export const dateFormat = new Intl.DateTimeFormat('pt-PT', {
   year: 'numeric',
 });
 
+export const moneyFormat = new Intl.NumberFormat('pt-PT', {
+  style: 'currency',
+  currency: 'EUR',
+});
+
 export function formatDate(date: Date | string, includeTime = true) {
   if (includeTime) {
     return dateTimeFormat.format(new Date(date));

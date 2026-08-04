@@ -32,9 +32,7 @@ export function ServicesSelect({onChange}: ServiceSelectProps) {
     select: items => {
       const placeholder = {
         label:
-          items.length > 0
-            ? 'Escolha um serviço'
-            : 'Nenhum serviço disponível',
+          items.length > 0 ? 'Escolha um serviço' : 'Nenhum serviço disponível',
         value: null,
       };
 
@@ -49,14 +47,14 @@ export function ServicesSelect({onChange}: ServiceSelectProps) {
 
   if (isLoading) {
     return (
-      <Skeleton className="h-8 w-full rounded-md border border-input bg-background px-3 py-2" />
+      <Skeleton className="h-11 w-full rounded-md border border-input bg-background px-3 py-2" />
     );
   }
 
   return (
     data && (
       <Select onValueChange={v => onChange(v as string)} items={data}>
-        <SelectTrigger className="w-full pl-9">
+        <SelectTrigger className="w-full pl-9 h-11!">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -71,12 +69,6 @@ export function ServicesSelect({onChange}: ServiceSelectProps) {
                 {item.label}
               </SelectItem>
             ))}
-
-            {/* {data.length === 0 && (
-              <SelectItem disabled value={null}>
-                Nenhum serviço disponível
-              </SelectItem>
-            )} */}
           </SelectGroup>
         </SelectContent>
       </Select>

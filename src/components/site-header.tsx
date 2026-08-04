@@ -1,6 +1,6 @@
 'use client';
 
-import {Moon, RefreshCcw, Sun} from 'lucide-react';
+import {IconMoon, IconRefresh, IconSun} from '@tabler/icons-react';
 import {useRouter} from 'next/navigation';
 import {useTheme} from 'next-themes';
 import {useTransition} from 'react';
@@ -32,12 +32,12 @@ export function SiteHeader() {
         <SidebarTrigger className="-ml-1" />
         <div className="flex gap-2">
           <Button onClick={handleClick} variant="outline" size="icon">
-            {theme === 'light' && <Moon />}
-            {theme === 'dark' && <Sun />}
+            {theme === 'light' && <IconMoon />}
+            {theme === 'dark' && <IconSun />}
           </Button>
 
           <Button onClick={handleRefresh} size="icon">
-            <RefreshCcw className={isPending ? 'animate-spin' : ''} />
+            <IconRefresh className={isPending ? 'animate-spin' : ''} />
           </Button>
         </div>
       </div>

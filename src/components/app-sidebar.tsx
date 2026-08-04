@@ -1,12 +1,13 @@
 'use client';
 
 import {
-  Calendar,
-  Dog,
-  LayoutDashboardIcon,
-  PawPrint,
-  TowelRack,
-} from 'lucide-react';
+  IconCalendar,
+  IconDog,
+  IconGauge,
+  IconScissors,
+  IconSettings,
+} from '@tabler/icons-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import type * as React from 'react';
 import {NavMain} from '@/components/nav-main';
@@ -31,22 +32,27 @@ const data = {
     {
       title: 'Dashboard',
       url: '/dashboard',
-      icon: <LayoutDashboardIcon />,
+      icon: <IconGauge />,
     },
     {
       title: 'Calendar',
       url: '/dashboard/calendar',
-      icon: <Calendar />,
+      icon: <IconCalendar />,
     },
     {
       title: 'Services',
       url: '/dashboard/services',
-      icon: <TowelRack />,
+      icon: <IconScissors />,
     },
     {
       title: 'Appointments',
       url: '/dashboard/appointments',
-      icon: <Dog />,
+      icon: <IconDog />,
+    },
+    {
+      title: 'Settings',
+      url: '/dashboard/settings',
+      icon: <IconSettings />,
     },
   ],
 };
@@ -60,8 +66,13 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
               render={<Link href="/" />}
             >
-              <PawPrint className="size-5!" />
-              <span className="text-base font-semibold">Grooming Booking</span>
+              <Image
+                alt="Logo"
+                src="/images/logo-bg.png"
+                width={32}
+                height={32}
+              />
+              <span className="text-base font-semibold">Toskio</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

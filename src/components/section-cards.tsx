@@ -1,4 +1,4 @@
-import {Calendar, Scissors, Users} from 'lucide-react';
+import {IconCalendar, IconScissors, IconUsers} from '@tabler/icons-react';
 import {Card, CardContent, CardHeader} from './ui/card';
 
 interface SectionCardsProps {
@@ -17,7 +17,7 @@ export function SectionCards({
       <Card>
         <CardHeader className="flex items-center gap-2">
           <div className="bg-primary/10 text-primary flex size-8 shrink-0 items-center justify-center rounded-sm">
-            <Calendar />
+            <IconCalendar />
           </div>
           <span className="text-2xl">{appointments}</span>
         </CardHeader>
@@ -33,7 +33,7 @@ export function SectionCards({
       <Card>
         <CardHeader className="flex items-center gap-2">
           <div className="bg-primary/10 text-primary flex size-8 shrink-0 items-center justify-center rounded-sm">
-            <Users />
+            <IconUsers />
           </div>
           <span className="text-2xl">{customers}</span>
         </CardHeader>
@@ -49,7 +49,7 @@ export function SectionCards({
       <Card>
         <CardHeader className="flex items-center gap-2">
           <div className="bg-primary/10 text-primary flex size-8 shrink-0 items-center justify-center rounded-sm">
-            <Scissors />
+            <IconScissors />
           </div>
           <span className="text-2xl">{services}</span>
         </CardHeader>

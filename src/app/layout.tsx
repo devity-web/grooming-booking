@@ -11,31 +11,13 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: 'PetSpa · Agende o banho e tosa do seu pet',
+  title: 'Toskio · Agende o cuidado para seu pet',
   description:
     'Agende de forma rápida uma sessão de banho e tosa para o seu pet. Escolha a data, o horário e preencha seus dados.',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
 };
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
+  colorScheme: 'dark',
   themeColor: [
     {media: '(prefers-color-scheme: light)', color: 'white'},
     {media: '(prefers-color-scheme: dark)', color: 'black'},
