@@ -161,6 +161,14 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+
+  --gradient-warm: linear-gradient(135deg, oklch(0.72 0.18 52), oklch(0.86 0.12 72));
+  --gradient-glow: radial-gradient(
+    60% 60% at 50% 0%,
+    color-mix(in oklab, oklch(0.72 0.18 52) 22%, transparent),
+    transparent 70%
+  );
+  --shadow-warm: 0 24px 60px -24px color-mix(in oklab, oklch(0.72 0.18 52) 45%, transparent);
 }
 
 @layer base {
@@ -170,4 +178,18 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@utility text-gradient-warm {
+  background-image: var(--gradient-warm);
+  background-clip: text;
+  color: transparent;
+}
+
+@utility surface-glow {
+  background-image: var(--gradient-glow);
+}
+
+@utility shadow-warm {
+  box-shadow: var(--shadow-warm);
 }

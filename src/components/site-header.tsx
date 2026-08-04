@@ -1,6 +1,7 @@
 'use client';
 
-import {IconMoon, IconRefresh, IconSun} from '@tabler/icons-react';
+import {IconLink, IconMoon, IconRefresh, IconSun} from '@tabler/icons-react';
+import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {useTheme} from 'next-themes';
 import {useTransition} from 'react';
@@ -36,9 +37,16 @@ export function SiteHeader() {
             {theme === 'dark' && <IconSun />}
           </Button>
 
-          <Button onClick={handleRefresh} size="icon">
+          <Button variant="outline" onClick={handleRefresh} size="icon">
             <IconRefresh className={isPending ? 'animate-spin' : ''} />
           </Button>
+
+          <Link target="_blank" href="/appointment">
+            <Button variant="secondary">
+              <IconLink />
+              Página de Agendamento
+            </Button>
+          </Link>
         </div>
       </div>
     </header>
