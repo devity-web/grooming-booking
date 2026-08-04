@@ -3,7 +3,7 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import {IconBrandGoogleFilled} from '@tabler/icons-react';
 import {useMutation} from '@tanstack/react-query';
-import {usePathname, useRouter, useSearchParams} from 'next/navigation';
+import {useRouter, useSearchParams} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import z from 'zod';

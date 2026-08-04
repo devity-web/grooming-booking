@@ -10,7 +10,7 @@ export function BookingLabel({status}: BookingLabelProps) {
   return (
     <>
       {status === AppointmentStatus.PENDING && (
-        <Badge className="font-bold" variant="destructive">
+        <Badge className="font-bold" variant="default">
           <IconClock /> Pending
         </Badge>
       )}

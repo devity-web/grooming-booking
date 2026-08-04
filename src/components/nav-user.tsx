@@ -3,7 +3,7 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {EllipsisVerticalIcon, LogOutIcon} from 'lucide-react';
 import {useRouter} from 'next/navigation';
-import {Avatar, AvatarFallback} from '@/components/ui/avatar';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,7 +28,7 @@ export function NavUser() {
   const router = useRouter();
 
   const {data, isLoading} = useQuery({
-    queryKey: ['auth', 'user'],
+    queryKey: ['auth', 'session'],
     queryFn: async () => {
       const {data, error} = await client.auth.getSession();
 
@@ -55,9 +55,35 @@ export function NavUser() {
 
   const user = data?.session?.user;
 
-  if (isLoading) {
+  if (isLoading || !user) {
     return <NavUserSkeleton />;
   }
+
+  const firstName = user.user_metadata.first_name;
+  const lastName = user.user_metadata.last_name;
+  const email = user.email;
+
+  const getName = () => {
+    if (firstName && lastName) {
+      return `${firstName} ${lastName}`;
+    }
+
+    return '';
+  };
+
+  const getInitials = () => {
+    if (firstName && lastName) {
+      return `${firstName[0]}${lastName[0]}`.toUpperCase();
+    }
+    if (firstName) {
+      return firstName.slice(0, 2).toUpperCase();
+    }
+    if (email) {
+      return email.slice(0, 2).toUpperCase();
+    }
+
+    return '';
+  };
 
   return (
     user && (
@@ -72,13 +98,14 @@ export function NavUser() {
                 />
               }
             >
-              <Avatar className="size-8 rounded-lg grayscale">
+              <Avatar className="size-8 rounded-lg">
+                <AvatarImage src={user.user_metadata.avatar_url} />
                 <AvatarFallback className="rounded-lg">
-                  {user.email?.substring(0, 2).toUpperCase()}
+                  {getInitials()}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">Admin</span>
+                <span className="truncate font-medium">{getName()}</span>
                 <span className="truncate text-xs text-foreground/70">
                   {user.email}
                 </span>
@@ -95,12 +122,13 @@ export function NavUser() {
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="size-8">
+                      <AvatarImage src={user.user_metadata.avatar_url} />
                       <AvatarFallback className="rounded-lg">
-                        {user.email?.substring(0, 2).toUpperCase()}
+                        {getInitials()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-medium">Admin</span>
+                      <span className="truncate font-medium">{getName()}</span>
                       <span className="truncate text-xs text-muted-foreground">
                         {user.email}
                       </span>
