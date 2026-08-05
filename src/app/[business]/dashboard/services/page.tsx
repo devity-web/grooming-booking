@@ -12,9 +12,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import prisma from '@/lib/prisma';
+import {getTenantPrisma, type TenantPageProps} from '@/lib/tenant';
 
-export default function ServicesPage() {
+export default function ServicesPage(props: TenantPageProps) {
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -47,7 +47,7 @@ export default function ServicesPage() {
                 </TableBody>
               }
             >
-              <ServicesTableBody />
+              <ServicesTableBody {...props} />
             </Suspense>
           </Table>
         </CardContent>
@@ -56,7 +56,8 @@ export default function ServicesPage() {
   );
 }
 
-async function ServicesTableBody() {
+async function ServicesTableBody(props: TenantPageProps) {
+  const prisma = await getTenantPrisma(props.params);
   const services = await prisma.service.findMany({
     orderBy: {
       id: 'asc',

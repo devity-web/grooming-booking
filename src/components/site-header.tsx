@@ -10,16 +10,8 @@ import {Button} from './ui/button';
 
 export function SiteHeader() {
   const [isPending, startTransition] = useTransition();
-  const {setTheme, theme} = useTheme();
+  const {theme, setTheme} = useTheme();
   const router = useRouter();
-
-  const handleClick = () => {
-    if (theme === 'light') {
-      setTheme('dark');
-    } else {
-      setTheme('light');
-    }
-  };
 
   const handleRefresh = () => {
     startTransition(() => {
@@ -27,14 +19,23 @@ export function SiteHeader() {
     });
   };
 
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full justify-between gap-1 px-4 lg:gap-2 lg:px-6">
         <SidebarTrigger className="-ml-1" />
         <div className="flex gap-2">
-          <Button onClick={handleClick} variant="outline" size="icon">
-            {theme === 'light' && <IconMoon />}
-            {theme === 'dark' && <IconSun />}
+          <Button onClick={toggleTheme} variant="outline" size="icon">
+            {/* Sun icon: shown in dark mode, hidden in light mode */}
+            <IconSun className="h-4 w-4 hidden dark:block" />
+
+            {/* Moon icon: shown in light mode, hidden in dark mode */}
+            <IconMoon className="h-4 w-4 block dark:hidden" />
+
+            <span className="sr-only">Toggle theme</span>
           </Button>
 
           <Button variant="outline" onClick={handleRefresh} size="icon">

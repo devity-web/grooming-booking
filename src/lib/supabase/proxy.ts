@@ -49,13 +49,21 @@ export async function updateSession(request: NextRequest) {
 
   const user = data?.claims;
 
+  function isRouteMatch(pathname: string, routes: string[]) {
+    return routes.some(route => {
+      const pattern = new RegExp(`^(?:/[^/]+)?${route}(?:/.*)?$`);
+      return pattern.test(pathname);
+    });
+  }
+
   const {pathname} = request.nextUrl;
-  const isProtected = PROTECTED_ROUTES.some(r => pathname.startsWith(r));
-  const isAuthRoute = AUTH_ROUTES.some(r => pathname.startsWith(r));
+  const isProtected = isRouteMatch(pathname, PROTECTED_ROUTES);
+  const isAuthRoute = isRouteMatch(pathname, AUTH_ROUTES);
 
   if (user && isAuthRoute) {
+    const slug = request.cookies.get('business-url');
     const url = request.nextUrl.clone();
-    url.pathname = `/dashboard`;
+    url.pathname = `/${slug?.value}/dashboard`;
     return NextResponse.redirect(url);
   }
 

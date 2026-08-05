@@ -4,12 +4,14 @@ import {Suspense} from 'react';
 import {PendingTable} from '@/components/pending-table';
 import {SectionCards} from '@/components/section-cards';
 import {Spinner} from '@/components/ui/spinner';
-import prisma from '@/lib/prisma';
+import {getTenantPrisma, type TenantPageProps} from '@/lib/tenant';
 
-async function SectionCardsWrapper() {
-  const appointments = await prisma.appointment.count();
-  const services = await prisma.service.count();
-  const customers = await prisma.user.count();
+async function SectionCardsWrapper({params}: TenantPageProps) {
+  const tenantPrisma = await getTenantPrisma(params);
+
+  const appointments = await tenantPrisma.appointment.count();
+  const services = await tenantPrisma.service.count();
+  const customers = await tenantPrisma.customer.count();
 
   return (
     <SectionCards
@@ -20,13 +22,15 @@ async function SectionCardsWrapper() {
   );
 }
 
-async function PendingTableWrapper() {
-  const appointments = await prisma.appointment.findMany({
+async function PendingTableWrapper({params}: TenantPageProps) {
+  const tenantPrisma = await getTenantPrisma(params);
+
+  const appointments = await tenantPrisma.appointment.findMany({
     where: {
       status: 'pending',
     },
     include: {
-      user: true,
+      customer: true,
       service: true,
     },
   });
@@ -44,11 +48,11 @@ function SectionCardsSkeleton() {
   );
 }
 
-export default async function Page() {
+export default async function Page(props: TenantPageProps) {
   return (
     <div className="flex flex-1 flex-col gap-4">
       <Suspense fallback={<SectionCardsSkeleton />}>
-        <SectionCardsWrapper />
+        <SectionCardsWrapper {...props} />
       </Suspense>
 
       <Suspense
@@ -58,7 +62,7 @@ export default async function Page() {
           </div>
         }
       >
-        <PendingTableWrapper />
+        <PendingTableWrapper {...props} />
       </Suspense>
     </div>
   );

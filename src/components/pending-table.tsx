@@ -63,7 +63,7 @@ export function PendingTable({appointments}: PendingTableProps) {
             <TableBody>
               {appointments.map(appointment => (
                 <TableRow key={appointment.id}>
-                  <TableCell>{appointment.user.name}</TableCell>
+                  <TableCell>{appointment.customer.name}</TableCell>
                   <TableCell>{formatDate(appointment.date)}</TableCell>
                   <TableCell>{appointment.service.name}</TableCell>
                   <TableCell>

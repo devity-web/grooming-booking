@@ -3,7 +3,7 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import {IconCloudUpload} from '@tabler/icons-react';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import z from 'zod';
@@ -36,6 +36,7 @@ export function SettingsAccount() {
   const queryClient = useQueryClient();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState<string>();
 
   const {mutate, isPending} = useMutation({
     mutationFn: async (values: FormData) => {
@@ -106,17 +107,30 @@ export function SettingsAccount() {
         queryClient.invalidateQueries({queryKey: ['auth', 'session']});
         toast.success('Avatar uploaded successfully');
       },
-      onError: error => toast.error(error.message || 'Failed to upload avatar'),
+      onError: error => {
+        setPreview(undefined);
+        toast.error(error.message || 'Failed to upload avatar');
+      },
     });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      uploadAvatarMutation(file);
-    }
-    // Reset input so the same file can be selected again if needed
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+    if (e.target.files) {
+      const [file] = e.target.files;
+
+      if (file) {
+        if (preview) {
+          URL.revokeObjectURL(preview);
+        }
+
+        const previewUrl = URL.createObjectURL(file);
+
+        setPreview(previewUrl);
+        uploadAvatarMutation(file);
+      }
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -132,7 +146,7 @@ export function SettingsAccount() {
             {/* Avatar and Button Skeleton */}
             <div className="flex gap-2 items-center col-span-2">
               <Skeleton className="size-24 rounded-full" />
-              <Skeleton className="h-10 w-[130px] rounded-md" />
+              <Skeleton className="h-10 w-32.5 rounded-md" />
             </div>
 
             {/* First Name Field Skeleton */}
@@ -169,7 +183,9 @@ export function SettingsAccount() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex gap-2 items-center col-span-2">
                   <Avatar className="size-24">
-                    <AvatarImage src={data?.user.user_metadata.avatar_url} />
+                    <AvatarImage
+                      src={preview ?? data?.user.user_metadata.avatar_url}
+                    />
                     <AvatarFallback>AD</AvatarFallback>
                   </Avatar>
 

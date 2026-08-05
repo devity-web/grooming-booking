@@ -7,6 +7,7 @@ import {useRouter, useSearchParams} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import z from 'zod';
+import {signIn} from '@/actions/sign-in';
 import {createClient} from '@/lib/supabase/client';
 import {Button} from './ui/button';
 import {Form, FormField, FormItem, FormLabel, FormMessage} from './ui/form';
@@ -34,20 +35,22 @@ export function LoginForm() {
   const {mutate, isPending} = useMutation({
     mutationKey: ['auth', 'login'],
     mutationFn: async (data: FormData) => {
-      const {error} = await client.auth.signInWithPassword(data);
+      const {business, error} = await signIn(data);
 
-      if (error) {
+      if (error || !business) {
         throw error;
       }
+
+      return business;
     },
-    onSuccess: () => {
+    onSuccess: data => {
       const next = params.get('next');
 
       if (next) {
         return router.push(next);
       }
 
-      return router.push('/dashboard');
+      return router.push(`${data.url}/dashboard`);
     },
     onError: e => toast.error(e.message),
   });

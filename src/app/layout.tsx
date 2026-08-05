@@ -4,6 +4,7 @@ import {Geist} from 'next/font/google';
 import './globals.css';
 import {ThemeProvider} from '@/components/theme-provider';
 import {Toaster} from '@/components/ui/sonner';
+import {WithQueryClient} from '@/components/with-query-client';
 
 const geist = Geist({
   subsets: ['latin'],
@@ -42,7 +43,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <WithQueryClient>{children}</WithQueryClient>
           <Toaster />
         </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}

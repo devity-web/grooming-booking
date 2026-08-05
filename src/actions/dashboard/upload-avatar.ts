@@ -12,16 +12,17 @@ export async function uploadAvatar(formData: FormData) {
     data: {user},
     error: userError,
   } = await supabase.auth.getUser();
-  if (userError || !user) throw new Error('Unauthorized');
 
-  // 2. Format the file name to prevent caching issues
+  if (userError || !user) {
+    throw new Error('Unauthorized');
+  }
+
   const fileExt = file.name.split('.').pop();
   const fileName = `${user.id}-${Date.now()}.${fileExt}`;
   const filePath = `${user.id}/${fileName}`;
 
-  // 3. Upload to Supabase Storage
   const {error: uploadError} = await supabase.storage
-    .from('dev') // Replace with your actual bucket name
+    .from('avatars')
     .upload(filePath, file, {upsert: true});
 
   if (uploadError) {
@@ -30,13 +31,15 @@ export async function uploadAvatar(formData: FormData) {
 
   const {
     data: {publicUrl},
-  } = supabase.storage.from('dev').getPublicUrl(filePath);
+  } = supabase.storage.from('avatars').getPublicUrl(filePath);
 
   const {error: updateError} = await supabase.auth.updateUser({
     data: {avatar_url: publicUrl},
   });
 
-  if (updateError) throw new Error('Failed to update user profile');
+  if (updateError) {
+    throw new Error('Failed to update user profile');
+  }
 
   return publicUrl;
 }

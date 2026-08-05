@@ -1,5 +1,3 @@
-'use client';
-
 import {
   IconCalendar,
   IconDog,
@@ -9,7 +7,7 @@ import {
 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type * as React from 'react';
+import {Suspense} from 'react';
 import {NavMain} from '@/components/nav-main';
 import {NavUser} from '@/components/nav-user';
 import {
@@ -22,41 +20,37 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
+const items = [
+  {
+    title: 'Dashboard',
+    url: '/dashboard',
+    icon: <IconGauge />,
   },
-  navMain: [
-    {
-      title: 'Dashboard',
-      url: '/dashboard',
-      icon: <IconGauge />,
-    },
-    {
-      title: 'Calendar',
-      url: '/dashboard/calendar',
-      icon: <IconCalendar />,
-    },
-    {
-      title: 'Services',
-      url: '/dashboard/services',
-      icon: <IconScissors />,
-    },
-    {
-      title: 'Appointments',
-      url: '/dashboard/appointments',
-      icon: <IconDog />,
-    },
-    {
-      title: 'Settings',
-      url: '/dashboard/settings',
-      icon: <IconSettings />,
-    },
-  ],
-};
-export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
+  {
+    title: 'Calendar',
+    url: '/dashboard/calendar',
+    icon: <IconCalendar />,
+  },
+  {
+    title: 'Services',
+    url: '/dashboard/services',
+    icon: <IconScissors />,
+  },
+  {
+    title: 'Appointments',
+    url: '/dashboard/appointments',
+    icon: <IconDog />,
+  },
+  {
+    title: 'Settings',
+    url: '/dashboard/settings',
+    icon: <IconSettings />,
+  },
+];
+
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -68,7 +62,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             >
               <Image
                 alt="Logo"
-                src="/images/logo-bg.png"
+                src="/images/logo.png"
                 width={32}
                 height={32}
               />
@@ -78,7 +72,9 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <Suspense fallback={null}>
+          <NavMain items={items} />
+        </Suspense>
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

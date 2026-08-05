@@ -13,26 +13,30 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
+model Customer {
   id           String        @id @default(uuid())
-  email        String        @unique
+  email        String
   name         String
   phone        String
+  businessId   String
+  business     Business      @relation(fields: [businessId], references: [id])
   appointments Appointment[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @default(now()) @updatedAt
 }
 
 model Appointment {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  serviceId String
-  service   Service  @relation(fields: [serviceId], references: [id])
-  date      DateTime
-  status    String   @default("pending")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  id         String   @id @default(uuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+  serviceId  String
+  service    Service  @relation(fields: [serviceId], references: [id])
+  date       DateTime
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 }
 
 model Service {
@@ -40,8 +44,32 @@ model Service {
   name         String
   description  String
   price        Float
+  businessId   String
+  business     Business      @relation(fields: [businessId], references: [id])
   isActive     Boolean       @default(true)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @default(now()) @updatedAt
   appointments Appointment[]
+}
+
+model Profile {
+  id         String     @id @default(uuid())
+  userId     String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now()) @updatedAt
+  businesses Business[]
+}
+
+model Business {
+  id           String        @id @default(uuid())
+  name         String
+  url          String
+  meta         Json
+  profileId    String
+  profile      Profile       @relation(fields: [profileId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
+  services     Service[]
+  appointments Appointment[]
+  customers    Customer[]
 }

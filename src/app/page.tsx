@@ -63,7 +63,7 @@ export default function Page() {
             <span className="flex size-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
               <Image
                 alt="Logo"
-                src="/images/logo-bg.png"
+                src="/images/logo.png"
                 width={32}
                 height={32}
               />
