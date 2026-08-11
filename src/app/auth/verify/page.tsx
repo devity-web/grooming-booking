@@ -2,11 +2,20 @@
 
 import {IconLoader} from '@tabler/icons-react';
 import {useRouter, useSearchParams} from 'next/navigation';
-import {useEffect} from 'react';
+import {Suspense, useEffect} from 'react';
 import {toast} from 'sonner';
+import {Spinner} from '@/components/ui/spinner';
 import {createClient} from '@/lib/supabase/client';
 
 export default function CodePage() {
+  return (
+    <Suspense fallback={<Spinner className="size-8" />}>
+      <CodePageWrapper />
+    </Suspense>
+  );
+}
+
+function CodePageWrapper() {
   const params = useSearchParams();
   const client = createClient();
   const router = useRouter();

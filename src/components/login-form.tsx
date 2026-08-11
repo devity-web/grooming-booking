@@ -8,7 +8,6 @@ import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import z from 'zod';
 import {signIn} from '@/actions/sign-in';
-import {createClient} from '@/lib/supabase/client';
 import {Button} from './ui/button';
 import {Form, FormField, FormItem, FormLabel, FormMessage} from './ui/form';
 import {Input} from './ui/input';
@@ -31,7 +30,6 @@ export function LoginForm() {
     },
   });
 
-  const client = createClient();
   const {mutate, isPending} = useMutation({
     mutationKey: ['auth', 'login'],
     mutationFn: async (data: FormData) => {

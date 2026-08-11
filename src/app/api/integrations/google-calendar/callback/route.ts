@@ -1,4 +1,4 @@
-import {type NextRequest, NextResponse} from 'next/server';
+import {connection, type NextRequest, NextResponse} from 'next/server';
 import type {Business} from '@/app/generated/prisma/client';
 import {createGoogleAuth} from '@/lib/integrations/calendar';
 import {badRequest, internalServerError} from '@/lib/next';
@@ -6,6 +6,8 @@ import prisma from '@/lib/prisma';
 import {getContextFromSlug} from '@/lib/tenant';
 
 export async function GET(request: NextRequest) {
+  await connection();
+
   try {
     const code = request.nextUrl.searchParams.get('code');
     // const state = request.nextUrl.searchParams.get('state');

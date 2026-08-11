@@ -1,8 +1,10 @@
-import type {NextRequest} from 'next/server';
+import {connection, type NextRequest} from 'next/server';
 import {badRequest, internalServerError, ok} from '@/lib/next';
 import prisma from '@/lib/prisma';
 
 export async function GET(request: NextRequest) {
+  await connection();
+
   try {
     const id = request.nextUrl.searchParams.get('businessId');
 
