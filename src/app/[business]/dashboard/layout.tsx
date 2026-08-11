@@ -4,7 +4,7 @@ import {SiteHeader} from '@/components/site-header';
 import {SidebarInset, SidebarProvider} from '@/components/ui/sidebar';
 import type {TenantPageProps} from '@/lib/tenant';
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
   ...props
 }: PropsWithChildren & TenantPageProps) {

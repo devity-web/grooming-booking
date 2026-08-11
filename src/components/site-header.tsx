@@ -2,7 +2,7 @@
 
 import {IconLink, IconMoon, IconRefresh, IconSun} from '@tabler/icons-react';
 import Link from 'next/link';
-import {useRouter} from 'next/navigation';
+import {useParams, useRouter} from 'next/navigation';
 import {useTheme} from 'next-themes';
 import {useTransition} from 'react';
 import {SidebarTrigger} from '@/components/ui/sidebar';
@@ -12,6 +12,7 @@ export function SiteHeader() {
   const [isPending, startTransition] = useTransition();
   const {theme, setTheme} = useTheme();
   const router = useRouter();
+  const {business} = useParams();
 
   const handleRefresh = () => {
     startTransition(() => {
@@ -45,7 +46,7 @@ export function SiteHeader() {
             <IconRefresh className={isPending ? 'animate-spin' : ''} />
           </Button>
 
-          <Link target="_blank" href="appointment">
+          <Link target="_blank" href={`/${business}/appointment`}>
             <Button variant="secondary">
               <IconLink />
               Página de Agendamento
