@@ -30,7 +30,13 @@ export default function AuthLayout({children}: PropsWithChildren) {
       {/* Center content */}
       <div className="relative z-10 flex flex-1 items-center justify-center px-6 pb-24">
         <div className="flex w-full max-w-110 flex-col items-center">
-          <Image alt="Logo" src="/images/logo.png" width={60} height={60} />
+          <Image
+            quality={100}
+            alt="Logo"
+            src="/images/logo.png"
+            width={80}
+            height={80}
+          />
 
           <h1 className="mt-6 text-pretty text-center text-3xl font-semibold tracking-tight">
             Entrar no Toskio

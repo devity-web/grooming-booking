@@ -1,9 +1,16 @@
-import {IconLink} from '@tabler/icons-react';
+import {IconCalendarOff, IconLink} from '@tabler/icons-react';
 import {Suspense} from 'react';
 import {BookingRow} from '@/components/dashboard/booking-row';
-import {EmptyState} from '@/components/empty-state';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
 import {Spinner} from '@/components/ui/spinner';
 import {
   Table,
@@ -13,9 +20,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import prisma from '@/lib/prisma';
+import {getTenantPrisma, type TenantPageProps} from '@/lib/tenant';
 
-export default function AppointmentsPage() {
+export default function AppointmentsPage(props: TenantPageProps) {
   return (
     <div>
       <h1 className="text-2xl font-bold tracking-tight">Appointments</h1>
@@ -30,7 +37,7 @@ export default function AppointmentsPage() {
                 <TableHead>Service</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Created at</TableHead>
-                <TableHead className="w-12.5"></TableHead>
+                <TableHead className="w-12.5">...</TableHead>
               </TableRow>
             </TableHeader>
             <Suspense
@@ -46,7 +53,7 @@ export default function AppointmentsPage() {
                 </TableBody>
               }
             >
-              <BookingsTableBody />
+              <BookingsTableBody {...props} />
             </Suspense>
           </Table>
         </CardContent>
@@ -55,10 +62,12 @@ export default function AppointmentsPage() {
   );
 }
 
-async function BookingsTableBody() {
+async function BookingsTableBody({params}: TenantPageProps) {
+  const prisma = await getTenantPrisma(params);
+
   const bookings = await prisma.appointment.findMany({
     include: {
-      user: true,
+      customer: true,
       service: true,
     },
     orderBy: {
@@ -68,20 +77,30 @@ async function BookingsTableBody() {
 
   if (bookings.length === 0) {
     return (
-      <EmptyState
-        span={7}
-        title="No appointments"
-        body={
-          <div className="flex flex-col items-center gap-2">
-            You have no appointments yet. Get started by sharing your
-            appointment link with your customers.
-            <Button>
-              <IconLink />
-              Share
-            </Button>
-          </div>
-        }
-      />
+      <TableBody>
+        <TableRow>
+          <TableCell colSpan={7}>
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <IconCalendarOff />
+                </EmptyMedia>
+                <EmptyTitle>No appointments yet</EmptyTitle>
+                <EmptyDescription>
+                  You don't have any appointments yet. Get started by sharing
+                  you appointment link with your customers.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent className="flex-row justify-center gap-2">
+                <Button>
+                  <IconLink />
+                  Share
+                </Button>
+              </EmptyContent>
+            </Empty>
+          </TableCell>
+        </TableRow>
+      </TableBody>
     );
   }
 

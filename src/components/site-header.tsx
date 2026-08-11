@@ -29,11 +29,14 @@ export function SiteHeader() {
         <SidebarTrigger className="-ml-1" />
         <div className="flex gap-2">
           <Button onClick={toggleTheme} variant="outline" size="icon">
-            {/* Sun icon: shown in dark mode, hidden in light mode */}
-            <IconSun className="h-4 w-4 hidden dark:block" />
-
-            {/* Moon icon: shown in light mode, hidden in dark mode */}
-            <IconMoon className="h-4 w-4 block dark:hidden" />
+            <IconSun
+              key="sun"
+              className="absolute animate-in spin-in-90 zoom-in-50 fade-in duration-300 motion-reduce:animate-none hidden dark:block"
+            />
+            <IconMoon
+              key="moon"
+              className="absolute animate-in -spin-in-90 zoom-in-50 fade-in duration-300 motion-reduce:animate-none block dark:hidden"
+            />
 
             <span className="sr-only">Toggle theme</span>
           </Button>

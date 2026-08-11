@@ -6,54 +6,37 @@ import {useMutation} from '@tanstack/react-query';
 import {useRouter} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
-import z from 'zod';
-import {createClient} from '@/lib/supabase/client';
+import {signUp} from '@/actions/sign-up';
+import {
+  type SignUpFormData,
+  signUpFormSchema,
+} from '@/lib/schemas/sign-up.schema';
 import {Button} from './ui/button';
 import {Form, FormField, FormItem, FormLabel, FormMessage} from './ui/form';
 import {Input} from './ui/input';
 
-const formSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  email: z.email('Email inválido'),
-  password: z.string().min(1, 'A palavra-passe é obrigatória'),
-});
-
-type FormData = z.infer<typeof formSchema>;
-
 export function RegisterForm() {
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       email: '',
       password: '',
       firstName: '',
       lastName: '',
+      company: '',
     },
   });
 
-  const client = createClient();
   const {mutate, isPending} = useMutation({
     mutationKey: ['auth', 'signUp'],
-    mutationFn: async (data: FormData) => {
+    mutationFn: async (data: SignUpFormData) => {
       const origin =
         typeof window !== 'undefined' ? window.location.origin : '';
-      const {error} = await client.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          emailRedirectTo: `${origin}/auth/verify`,
-          data: {
-            first_name: data.firstName,
-            last_name: data.lastName,
-          },
-        },
-      });
 
-      if (error) {
-        throw error;
-      }
+      const response = await signUp({...data, origin});
+
+      return response;
     },
     onSuccess: () => {
       router.push('/auth');
@@ -61,7 +44,7 @@ export function RegisterForm() {
     onError: e => toast.error(e.message),
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: SignUpFormData) => {
     mutate(data);
   };
 
@@ -108,6 +91,21 @@ export function RegisterForm() {
                     Last Name
                   </FormLabel>
                   <Input placeholder="Doe" {...field} />
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="company"
+              render={({field}) => (
+                <FormItem className="col-span-2">
+                  <FormLabel className="text-right font-medium text-foreground">
+                    Empresa
+                  </FormLabel>
+                  <Input placeholder="Pet Spa" {...field} />
 
                   <FormMessage />
                 </FormItem>

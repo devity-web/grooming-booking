@@ -1,16 +1,5 @@
-import {IconCloudUpload, IconDog, IconUser} from '@tabler/icons-react';
+import {IconDog, IconUser} from '@tabler/icons-react';
 import {SettingsAccount} from '@/components/dashboard/settings-account';
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
-import {Button} from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {Form} from '@/components/ui/form';
-import {Input} from '@/components/ui/input';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 
 export default function SettingsPage() {

@@ -19,7 +19,7 @@ export function BookingRow({booking}: {booking: Appointment}) {
   return (
     <TableRow key={booking.id}>
       <TableCell className="font-bold">{booking.id.slice(0, 8)}</TableCell>
-      <TableCell>{booking.user.name}</TableCell>
+      <TableCell>{booking.customer.name}</TableCell>
       <TableCell>{formatDate(booking.date)}</TableCell>
       <TableCell>{booking.service.name}</TableCell>
       <TableCell>

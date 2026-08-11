@@ -60,14 +60,7 @@ export default function Page() {
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2">
-            <span className="flex size-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
-              <Image
-                alt="Logo"
-                src="/images/logo.png"
-                width={32}
-                height={32}
-              />
-            </span>
+            <Image alt="Logo" src="/images/logo.png" width={48} height={48} />
             <span className="font-display text-lg font-bold">Toskio</span>
           </div>
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">

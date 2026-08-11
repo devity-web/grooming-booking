@@ -11,14 +11,7 @@ import {uploadAvatar} from '@/actions/dashboard/upload-avatar';
 import {createClient} from '@/lib/supabase/client';
 import {Avatar, AvatarFallback, AvatarImage} from '../ui/avatar';
 import {Button} from '../ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '../ui/card';
+import {Card, CardContent, CardFooter} from '../ui/card';
 import {Form, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
 import {Skeleton} from '../ui/skeleton';
@@ -137,10 +130,6 @@ export function SettingsAccount() {
   if (isLoading) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>Account</CardTitle>
-          <CardDescription>Manage your account settings</CardDescription>
-        </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
             {/* Avatar and Button Skeleton */}
@@ -170,10 +159,6 @@ export function SettingsAccount() {
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <Form {...form}>
         <Card>
-          <CardHeader>
-            <CardTitle>Account</CardTitle>
-            <CardDescription>Manage your account settings</CardDescription>
-          </CardHeader>
           {isLoading ? (
             <CardContent>
               <Spinner className="size-8" />
@@ -186,7 +171,7 @@ export function SettingsAccount() {
                     <AvatarImage
                       src={preview ?? data?.user.user_metadata.avatar_url}
                     />
-                    <AvatarFallback>AD</AvatarFallback>
+                    <AvatarFallback className="text-2xl">AD</AvatarFallback>
                   </Avatar>
 
                   <Button
