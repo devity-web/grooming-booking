@@ -69,6 +69,7 @@ async function BookingsTableBody({params}: TenantPageProps) {
     include: {
       customer: true,
       service: true,
+      business: true,
     },
     orderBy: {
       createdAt: 'desc',

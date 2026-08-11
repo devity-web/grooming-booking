@@ -69,7 +69,10 @@ export const getTenantPrisma = cache(
         $allModels: {
           async $allOperations({model, args, query}) {
             // If the model has a businessId field, automatically inject it into queries
-            if (['Service', 'Appointment', 'Customer'].includes(model)) {
+            if (
+              ['Service', 'Appointment', 'Customer'].includes(model) &&
+              'where' in args
+            ) {
               args.where = {...args.where, businessId: business.id};
             }
             return query(args);

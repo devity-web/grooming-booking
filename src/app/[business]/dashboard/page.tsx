@@ -32,6 +32,7 @@ async function PendingTableWrapper({params}: TenantPageProps) {
     include: {
       customer: true,
       service: true,
+      business: true,
     },
   });
 

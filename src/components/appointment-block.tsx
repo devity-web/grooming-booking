@@ -34,13 +34,15 @@ export function AppointmentBlock({
       )}
     >
       <span
-        className={cn('absolute inset-y-0 left-0 w-1.5 rounded-l-lg bg-red-500')}
+        className={cn(
+          'absolute inset-y-0 left-0 w-1.5 rounded-l-lg bg-red-500',
+        )}
         aria-hidden="true"
       />
       <div className="flex items-center gap-1.5 pl-1.5">
         <User className="size-3" strokeWidth={2.5} />
         <span className="truncate text-[13px] font-medium leading-tight">
-          {appointment.user.name}
+          {appointment.customer.name}
         </span>
       </div>
 

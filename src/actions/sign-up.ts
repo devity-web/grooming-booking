@@ -4,7 +4,10 @@ import prisma from '@/lib/prisma';
 import type {SignUpFormData} from '@/lib/schemas/sign-up.schema';
 import {createClient} from '@/lib/supabase/server';
 
-export async function signUp({origin, ...data}: SignUpFormData & {origin: string}) {
+export async function signUp({
+  origin,
+  ...data
+}: SignUpFormData & {origin: string}) {
   const client = await createClient();
   const {
     data: {user},
@@ -41,6 +44,7 @@ export async function signUp({origin, ...data}: SignUpFormData & {origin: string
       meta: {},
       name: data.company,
       url: data.company.toLowerCase().split(' ').join('-'),
+      address: 'Test',
     },
   });
 }
