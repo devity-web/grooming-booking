@@ -31,6 +31,11 @@ export const dateFormat = new Intl.DateTimeFormat('pt-PT', {
   year: 'numeric',
 });
 
+export const timeFormat = new Intl.DateTimeFormat('pt-PT', {
+  hour: '2-digit',
+  minute: '2-digit',
+});
+
 export const moneyFormat = new Intl.NumberFormat('pt-PT', {
   style: 'currency',
   currency: 'EUR',
@@ -42,6 +47,10 @@ export function formatDate(date: Date | string, includeTime = true) {
   }
 
   return longDateFormat.format(new Date(date));
+}
+
+export function formatTime(date: Date | string) {
+  return timeFormat.format(new Date(date));
 }
 
 export const AppointmentStatus = {

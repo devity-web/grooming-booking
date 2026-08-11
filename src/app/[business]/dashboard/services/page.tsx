@@ -1,8 +1,15 @@
-import {CircleOff} from 'lucide-react';
+import {IconScissorsOff} from '@tabler/icons-react';
 import {Suspense} from 'react';
 import {CreateServiceDialog} from '@/components/dashboard/create-service-dialog';
 import {ServiceRow} from '@/components/dashboard/service-row';
 import {Card, CardContent} from '@/components/ui/card';
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
 import {Spinner} from '@/components/ui/spinner';
 import {
   Table,
@@ -69,16 +76,18 @@ async function ServicesTableBody(props: TenantPageProps) {
       <TableBody>
         <TableRow>
           <TableCell colSpan={6}>
-            <div className="flex flex-col items-center justify-center gap-6 py-20">
-              <CircleOff className="h-20 w-20 text-muted" />
-              <div className="space-y-2 text-center">
-                <h3 className="text-2xl font-bold">No Services</h3>
-                <p className="text-muted-foreground">
-                  It looks like you haven't created any services yet. Get
-                  started by creating your first service.
-                </p>
-              </div>
-            </div>
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <IconScissorsOff />
+                </EmptyMedia>
+                <EmptyTitle>No services yet</EmptyTitle>
+                <EmptyDescription>
+                  You don't have any appointments yet. Get started by creating
+                  your first service
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           </TableCell>
         </TableRow>
       </TableBody>

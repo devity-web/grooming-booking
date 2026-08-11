@@ -31,7 +31,7 @@ const formSchema = z.object({
   service: z.uuid('Escolha um serviço'),
 });
 
-export function BookingExperience() {
+export function BookingExperience({businessSlug}: {businessSlug: string}) {
   const [date, setDate] = useState<Date>();
   const [slot, setSlot] = useState<string>();
   const [confirmed, setConfirmed] = useState(false);
@@ -55,6 +55,7 @@ export function BookingExperience() {
 
     try {
       const user = await createAppointment({
+        businessSlug,
         form: {
           email: data.email,
           name: data.name,
@@ -89,12 +90,12 @@ export function BookingExperience() {
             <CheckCircle2 className="size-9 text-primary" />
           </div>
           <h2 className="font-heading text-2xl font-bold text-foreground text-balance">
-            Agendamento confirmado!
+            Sua agenda foi reservada.
           </h2>
           <p className="mt-2 text-muted-foreground text-pretty">
             {form.getValues('name').split(' ')[0]}, a sessão de banho e tosa do
             seu pet está reservada. Enviamos os detalhes para{' '}
-            {form.getValues('email')}.
+            {form.getValues('email')} assim que for confirmada pelo groomer.
           </p>
           <div className="mt-6 space-y-3 rounded-2xl bg-secondary p-4 text-left">
             <div className="flex items-center gap-3">

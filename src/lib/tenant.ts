@@ -1,3 +1,4 @@
+import {cookies} from 'next/headers';
 import {notFound} from 'next/navigation';
 import {cache} from 'react';
 import prisma from './prisma';
@@ -7,6 +8,17 @@ export type TenantParams = Promise<{business: string}>;
 
 export type TenantPageProps = {
   params: TenantParams;
+};
+
+export const getContextFromSlug = async () => {
+  const cookieStore = await cookies();
+  const businessSlug = cookieStore.get('business-url')?.value;
+
+  if (!businessSlug) {
+    throw new Error('Business cookie is missing');
+  }
+
+  return getTenantContext(businessSlug);
 };
 
 export const getTenantContext = cache(

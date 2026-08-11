@@ -8,13 +8,24 @@ type createAppointmentInput = {
   date: Date;
   slot: string;
   service: string;
+  businessSlug: string;
 };
 
 export async function createAppointment(data: createAppointmentInput) {
   try {
     console.log('[create-appointment] Creating appointment with data', data);
 
-    const {user} = await createOrGetUser(data.form);
+    const business = await prisma.business.findUnique({
+      where: {
+        url: data.businessSlug,
+      },
+    });
+
+    if (!business) {
+      throw new Error('Business with slug not found');
+    }
+
+    const {user} = await createOrGetUser(data.form, business);
 
     if (!user) {
       throw new Error('Falha ao criar usuário. Tente novamente.');
@@ -22,7 +33,8 @@ export async function createAppointment(data: createAppointmentInput) {
 
     const appointment = await prisma.appointment.create({
       data: {
-        userId: user.id,
+        customerId: user.id,
+        businessId: business.id,
         date: dateAndSlotToDate(data.date, data.slot),
         serviceId: data.service,
       },

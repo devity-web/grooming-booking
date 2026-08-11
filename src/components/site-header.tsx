@@ -45,7 +45,7 @@ export function SiteHeader() {
             <IconRefresh className={isPending ? 'animate-spin' : ''} />
           </Button>
 
-          <Link target="_blank" href="/appointment">
+          <Link target="_blank" href="appointment">
             <Button variant="secondary">
               <IconLink />
               Página de Agendamento

@@ -216,11 +216,11 @@ export type BusinessOrderByWithRelationInput = {
 
 export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  url?: string
   AND?: Prisma.BusinessWhereInput | Prisma.BusinessWhereInput[]
   OR?: Prisma.BusinessWhereInput[]
   NOT?: Prisma.BusinessWhereInput | Prisma.BusinessWhereInput[]
   name?: Prisma.StringFilter<"Business"> | string
-  url?: Prisma.StringFilter<"Business"> | string
   meta?: Prisma.JsonFilter<"Business">
   profileId?: Prisma.StringFilter<"Business"> | string
   createdAt?: Prisma.DateTimeFilter<"Business"> | Date | string
@@ -229,7 +229,7 @@ export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   services?: Prisma.ServiceListRelationFilter
   appointments?: Prisma.AppointmentListRelationFilter
   customers?: Prisma.CustomerListRelationFilter
-}, "id">
+}, "id" | "url">
 
 export type BusinessOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

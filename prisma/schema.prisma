@@ -63,7 +63,7 @@ model Profile {
 model Business {
   id           String        @id @default(uuid())
   name         String
-  url          String
+  url          String        @unique
   meta         Json
   profileId    String
   profile      Profile       @relation(fields: [profileId], references: [id])

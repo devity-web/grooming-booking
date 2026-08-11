@@ -2,6 +2,7 @@
 
 import {revalidatePath} from 'next/cache';
 import prisma from '@/lib/prisma';
+import {getContextFromSlug} from '@/lib/tenant';
 
 export async function upsertService(data: {
   id?: string;
@@ -10,9 +11,13 @@ export async function upsertService(data: {
   price: number;
 }) {
   try {
+    const {business} = await getContextFromSlug();
     const service = await prisma.service.upsert({
       where: {id: data.id ?? ''},
-      create: data,
+      create: {
+        ...data,
+        businessId: business.id,
+      },
       update: data,
     });
 

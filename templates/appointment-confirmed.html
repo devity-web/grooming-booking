@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <title>Agendamento confirmado</title>
+
+    <style>
+      @media only screen and (max-width: 620px) {
+        .email-container {
+          width: 100% !important;
+        }
+
+        .email-card {
+          border-radius: 18px !important;
+        }
+
+        .content-padding {
+          padding-left: 24px !important;
+          padding-right: 24px !important;
+        }
+
+        .email-title {
+          font-size: 29px !important;
+          line-height: 36px !important;
+        }
+
+        .button {
+          display: block !important;
+          text-align: center !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #f5f0eb;
+      word-spacing: normal;
+    "
+  >
+    <!-- Preview text -->
+    <div
+      style="
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        color: transparent;
+      "
+    >
+      {{{SERVICE_NAME}}} agendado para {{{APPOINTMENT_DATE}}} às {{{APPOINTMENT_TIME}}}.
+    </div>
+
+    <table
+      role="presentation"
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      border="0"
+      style="width: 100%; background-color: #f5f0eb"
+    >
+      <tr>
+        <td align="center" style="padding: 32px 12px">
+          <table
+            role="presentation"
+            width="600"
+            cellspacing="0"
+            cellpadding="0"
+            border="0"
+            class="email-container"
+            style="width: 100%; max-width: 600px"
+          >
+            <!-- Brand -->
+            <tr>
+              <td align="center" style="padding: 0 16px 22px">
+                <span
+                  style="
+                    color: #4f4037;
+                    font-family: Georgia, 'Times New Roman', serif;
+                    font-size: 25px;
+                    font-weight: 700;
+                    letter-spacing: -0.4px;
+                  "
+                >
+                  🐾 {{{BUSINESS_NAME}}}
+                </span>
+              </td>
+            </tr>
+
+            <!-- Main card -->
+            <tr>
+              <td
+                class="email-card"
+                style="
+                  overflow: hidden;
+                  border: 1px solid #e5d9cf;
+                  border-radius: 24px;
+                  background-color: #fffdfb;
+                  box-shadow: 0 12px 35px rgba(74, 56, 45, 0.08);
+                "
+              >
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <!-- Accent -->
+                  <tr>
+                    <td
+                      style="
+                        height: 8px;
+                        background-color: #5b4639;
+                        font-size: 0;
+                        line-height: 0;
+                      "
+                    >
+                      &nbsp;
+                    </td>
+                  </tr>
+
+                  <!-- Hero -->
+                  <tr>
+                    <td align="center" class="content-padding" style="padding: 42px 38px 24px">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td
+                            align="center"
+                            width="64"
+                            height="64"
+                            style="
+                              width: 64px;
+                              height: 64px;
+                              border-radius: 50%;
+                              background-color: #f0dfc7;
+                              color: #5b4639;
+                              font-family: Arial, sans-serif;
+                              font-size: 30px;
+                              font-weight: 700;
+                              line-height: 64px;
+                            "
+                          >
+                            ✓
+                          </td>
+                        </tr>
+                      </table>
+
+                      <p
+                        style="
+                          margin: 24px 0 8px;
+                          color: #5b4639;
+                          font-family: Arial, sans-serif;
+                          font-size: 12px;
+                          font-weight: 700;
+                          letter-spacing: 1.4px;
+                          line-height: 18px;
+                          text-transform: uppercase;
+                        "
+                      >
+                        Tudo marcado
+                      </p>
+
+                      <h1
+                        class="email-title"
+                        style="
+                          margin: 0;
+                          color: #2f2824;
+                          font-family: Georgia, 'Times New Roman', serif;
+                          font-size: 34px;
+                          font-weight: 700;
+                          letter-spacing: -0.7px;
+                          line-height: 42px;
+                        "
+                      >
+                        O cuidado de {{{PET_NAME}}} está agendado
+                      </h1>
+
+                      <p
+                        style="
+                          margin: 16px 0 0;
+                          color: #76675d;
+                          font-family: Arial, sans-serif;
+                          font-size: 16px;
+                          line-height: 25px;
+                        "
+                      >
+                        Olá, {{{CUSTOMER_NAME}}}! Reservámos este momento para deixar {{{PET_NAME}}} ainda mais feliz,
+                        cheiroso e bem cuidado.
+                      </p>
+                    </td>
+                  </tr>
+
+                  <!-- Booking details -->
+                  <tr>
+                    <td class="content-padding" style="padding: 8px 38px 0">
+                      <table
+                        role="presentation"
+                        width="100%"
+                        cellspacing="0"
+                        cellpadding="0"
+                        border="0"
+                        style="
+                          width: 100%;
+                          border: 1px solid #eadfd5;
+                          border-radius: 16px;
+                          background-color: #fbf7f3;
+                        "
+                      >
+                        <tr>
+                          <td style="padding: 4px 22px">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                              <tr>
+                                <td
+                                  style="
+                                    padding: 16px 0;
+                                    border-bottom: 1px solid #eadfd5;
+                                  "
+                                >
+                                  <p
+                                    style="margin: 0 0 4px; color: #8a796d; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;"
+                                  >
+                                    Pet
+                                  </p>
+                                  <p
+                                    style="margin: 0; color: #312a25; font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; line-height: 24px;"
+                                  >
+                                    {{{PET_NAME}}}
+                                  </p>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td
+                                  style="
+                                    padding: 16px 0;
+                                    border-bottom: 1px solid #eadfd5;
+                                  "
+                                >
+                                  <p
+                                    style="margin: 0 0 4px; color: #8a796d; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;"
+                                  >
+                                    Serviço
+                                  </p>
+                                  <p
+                                    style="margin: 0; color: #312a25; font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; line-height: 24px;"
+                                  >
+                                    {{{SERVICE_NAME}}}
+                                  </p>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td
+                                  style="
+                                    padding: 16px 0;
+                                    border-bottom: 1px solid #eadfd5;
+                                  "
+                                >
+                                  <p
+                                    style="margin: 0 0 4px; color: #8a796d; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;"
+                                  >
+                                    Data e horário
+                                  </p>
+                                  <p
+                                    style="margin: 0; color: #312a25; font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; line-height: 24px;"
+                                  >
+                                    {{{APPOINTMENT_DATE}}} · {{{APPOINTMENT_TIME}}}
+                                  </p>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td
+                                  style="
+                                    padding: 16px 0;
+                                    border-bottom: 1px solid #eadfd5;
+                                  "
+                                >
+                                  <p
+                                    style="margin: 0 0 4px; color: #8a796d; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;"
+                                  >
+                                    Groomer
+                                  </p>
+                                  <p
+                                    style="margin: 0; color: #312a25; font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; line-height: 24px;"
+                                  >
+                                    {{{GROOMER_NAME}}}
+                                  </p>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td
+                                  style="
+                                    padding: 16px 0;
+                                    border-bottom: 1px solid #eadfd5;
+                                  "
+                                >
+                                  <p
+                                    style="margin: 0 0 4px; color: #8a796d; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;"
+                                  >
+                                    Local
+                                  </p>
+                                  <p
+                                    style="margin: 0; color: #312a25; font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; line-height: 24px;"
+                                  >
+                                    {{{BUSINESS_ADDRESS}}}
+                                  </p>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="padding: 16px 0">
+                                  <p
+                                    style="margin: 0 0 4px; color: #8a796d; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;"
+                                  >
+                                    Total
+                                  </p>
+                                  <p
+                                    style="margin: 0; color: #312a25; font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; line-height: 24px;"
+                                  >
+                                    {{{TOTAL_PRICE}}}
+                                  </p>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <!-- Button -->
+                  <tr>
+                    <td align="center" class="content-padding" style="padding: 28px 38px 0">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td
+                            align="center"
+                            style="
+                              border-radius: 12px;
+                              background-color: #5b4639;
+                            "
+                          >
+                            <a
+                              href="{{{MANAGE_BOOKING_URL}}}"
+                              target="_blank"
+                              class="button"
+                              style="
+                                display: inline-block;
+                                padding: 15px 26px;
+                                color: #ffffff;
+                                font-family: Arial, sans-serif;
+                                font-size: 15px;
+                                font-weight: 700;
+                                line-height: 20px;
+                                text-decoration: none;
+                              "
+                            >
+                              Ver ou gerir agendamento
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <!-- Tip -->
+                  <tr>
+                    <td class="content-padding" style="padding: 28px 38px 38px">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td
+                            style="
+                              padding: 18px;
+                              border-radius: 14px;
+                              background-color: #f1e4d2;
+                            "
+                          >
+                            <p
+                              style="
+                                margin: 0 0 5px;
+                                color: #4f4037;
+                                font-family: Arial, sans-serif;
+                                font-size: 14px;
+                                font-weight: 700;
+                                line-height: 20px;
+                              "
+                            >
+                              💡 Antes da visita
+                            </p>
+
+                            <p
+                              style="
+                                margin: 0;
+                                color: #6f5d51;
+                                font-family: Arial, sans-serif;
+                                font-size: 13px;
+                                line-height: 20px;
+                              "
+                            >
+                              Se {{{PET_NAME}}} tiver alguma necessidade especial, alergia ou sensibilidade, responda a
+                              este email para nos avisar.
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td
+                align="center"
+                style="
+                  padding: 22px 24px 0;
+                  color: #8a796d;
+                  font-family: Arial, sans-serif;
+                  font-size: 12px;
+                  line-height: 19px;
+                "
+              >
+                <p style="margin: 0">Enviado com carinho por {{{BUSINESS_NAME}}}.</p>
+
+                <p style="margin: 5px 0 0">
+                  Precisa de ajuda?
+                  <a
+                    href="mailto:{{{SUPPORT_EMAIL}}}"
+                    style="
+                      color: #5b4639;
+                      font-weight: 700;
+                      text-decoration: underline;
+                    "
+                  >
+                    {{{SUPPORT_EMAIL}}}
+                  </a>
+                </p>
+
+                <p style="margin: 5px 0 0">Referência: {{{BOOKING_REFERENCE}}}</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
