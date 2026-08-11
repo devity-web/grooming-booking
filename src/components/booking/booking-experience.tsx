@@ -1,9 +1,10 @@
 'use client';
 
 import {zodResolver} from '@hookform/resolvers/zod';
+import {IconPaw} from '@tabler/icons-react';
+import {useMutation} from '@tanstack/react-query';
 import {
   CalendarDays,
-  CheckCircle2,
   Clock,
   Mail,
   PawPrint,
@@ -12,13 +13,16 @@ import {
   UserPen,
 } from 'lucide-react';
 import Image from 'next/image';
+import {useRouter} from 'next/navigation';
 import {Suspense, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {createAppointment} from '@/actions/create-appointment';
+import type {Business} from '@/app/generated/prisma/client';
 import {BookingCalendar} from '@/components/booking/booking-calendar';
 import {TimeSlots} from '@/components/booking/time-slots';
 import {Button} from '@/components/ui/button';
+import {Skeleton} from '@/components/ui/skeleton';
 import {formatDate} from '@/lib/utils';
 import {Form, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
@@ -29,13 +33,80 @@ const formSchema = z.object({
   email: z.email('Email inválido'),
   phone: z.string().min(1, 'Telefone é obrigatório'),
   service: z.uuid('Escolha um serviço'),
+  petName: z.string().min(1, 'O nome do PET é obrigatório'),
 });
 
-export function BookingExperience({businessSlug}: {businessSlug: string}) {
+export function BookingExperienceSkeleton() {
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-10 sm:py-14">
+      <header className="mb-10 flex flex-col items-center gap-5 sm:flex-row">
+        <Skeleton className="size-24 shrink-0 rounded-3xl sm:size-28" />
+        <div className="flex w-full flex-col items-center gap-2 sm:items-start">
+          <Skeleton className="h-6 w-40 rounded-full" />
+          <Skeleton className="h-9 w-full max-w-md sm:h-10" />
+          <Skeleton className="h-5 w-full max-w-sm" />
+        </div>
+      </header>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="flex flex-col gap-6">
+          <section className="rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6">
+            <div className="mb-4 flex items-center gap-2">
+              <Skeleton className="size-5 rounded-md" />
+              <Skeleton className="h-6 w-40" />
+            </div>
+            <Skeleton className="h-80 w-full rounded-2xl" />
+          </section>
+
+          <section className="rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6">
+            <div className="mb-4 flex items-center gap-2">
+              <Skeleton className="size-5 rounded-md" />
+              <Skeleton className="h-6 w-44" />
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {Array.from({length: 9}).map((_, index) => (
+                <Skeleton
+                  className="h-11.5 rounded-xl"
+                  // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton items have no identity
+                  key={index}
+                />
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <section className="flex h-fit flex-col rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <Skeleton className="size-5 rounded-md" />
+            <Skeleton className="h-6 w-32" />
+          </div>
+
+          <div className="flex flex-col gap-4">
+            {['service', 'name', 'email', 'phone'].map(field => (
+              <div className="space-y-2" key={field}>
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-10 w-full rounded-md" />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-5 space-y-2 rounded-2xl bg-secondary p-4">
+            <Skeleton className="h-3 w-16" />
+            <Skeleton className="h-4 w-40" />
+            <Skeleton className="h-4 w-48" />
+          </div>
+
+          <Skeleton className="mt-5 h-11 w-full rounded-md" />
+        </section>
+      </div>
+    </div>
+  );
+}
+
+export function BookingExperience({business}: {business: Business}) {
   const [date, setDate] = useState<Date>();
   const [slot, setSlot] = useState<string>();
-  const [confirmed, setConfirmed] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,19 +114,17 @@ export function BookingExperience({businessSlug}: {businessSlug: string}) {
       name: '',
       email: '',
       phone: '',
+      petName: '',
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    setLoading(true);
+  const {mutate, isPending} = useMutation({
+    mutationFn: async (data: z.infer<typeof formSchema>) => {
+      if (!date || !slot) {
+        return;
+      }
 
-    if (!date || !slot) {
-      return;
-    }
-
-    try {
-      const user = await createAppointment({
-        businessSlug,
+      return await createAppointment(business.id, {
         form: {
           email: data.email,
           name: data.name,
@@ -64,60 +133,19 @@ export function BookingExperience({businessSlug}: {businessSlug: string}) {
         date: date,
         slot: slot,
         service: data.service,
+        petName: data.petName,
       });
+    },
+    onSuccess: data => {
+      if (data) {
+        router.push(`/${business.url}/appointment/${data.appointment.id}`);
+      }
+    },
+  });
 
-      console.log(user);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setConfirmed(true);
-      setLoading(false);
-    }
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    mutate(data);
   };
-
-  function resetBooking() {
-    setDate(undefined);
-    setSlot(undefined);
-    setConfirmed(false);
-    form.reset();
-  }
-
-  if (confirmed && date && slot) {
-    return (
-      <div className="mx-auto max-w-lg px-4 py-16">
-        <div className="rounded-3xl border border-border bg-card p-8 text-center shadow-sm">
-          <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-full bg-primary/10">
-            <CheckCircle2 className="size-9 text-primary" />
-          </div>
-          <h2 className="font-heading text-2xl font-bold text-foreground text-balance">
-            Sua agenda foi reservada.
-          </h2>
-          <p className="mt-2 text-muted-foreground text-pretty">
-            {form.getValues('name').split(' ')[0]}, a sessão de banho e tosa do
-            seu pet está reservada. Enviamos os detalhes para{' '}
-            {form.getValues('email')} assim que for confirmada pelo groomer.
-          </p>
-          <div className="mt-6 space-y-3 rounded-2xl bg-secondary p-4 text-left">
-            <div className="flex items-center gap-3">
-              <CalendarDays className="size-5 shrink-0 text-primary" />
-              <span className="text-sm font-medium capitalize text-foreground">
-                {formatDate(date, false)}
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Clock className="size-5 shrink-0 text-primary" />
-              <span className="text-sm font-medium text-foreground">
-                {slot} · sessão de 1 hora
-              </span>
-            </div>
-          </div>
-          <Button onClick={resetBooking} className="mt-6 w-full" size="lg">
-            Fazer novo agendamento
-          </Button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:py-14">
@@ -135,7 +163,7 @@ export function BookingExperience({businessSlug}: {businessSlug: string}) {
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
             <PawPrint className="size-3.5" />
-            PetSpa · Banho & Tosa
+            {business.name} · {business.address}
           </span>
           <h1 className="mt-2 font-heading text-3xl font-bold text-foreground text-balance sm:text-4xl">
             Agende o cuidado do seu pet
@@ -201,7 +229,10 @@ export function BookingExperience({businessSlug}: {businessSlug: string}) {
                     </FormLabel>
                     <div className="relative">
                       <Scissors className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                      <ServicesSelect onChange={field.onChange} />
+                      <ServicesSelect
+                        businessId={business.id}
+                        onChange={field.onChange}
+                      />
                     </div>
 
                     <FormMessage />
@@ -255,6 +286,28 @@ export function BookingExperience({businessSlug}: {businessSlug: string}) {
 
               <FormField
                 control={form.control}
+                name="petName"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel className="text-right font-medium text-foreground">
+                      Nome do PET
+                    </FormLabel>
+                    <div className="relative">
+                      <IconPaw className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                      <Input
+                        className="pl-9"
+                        placeholder="O nome do teu pet"
+                        {...field}
+                      />
+                    </div>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="phone"
                 render={({field}) => (
                   <FormItem>
@@ -295,7 +348,7 @@ export function BookingExperience({businessSlug}: {businessSlug: string}) {
               type="submit"
               size="lg"
               className="mt-5 w-full"
-              isLoading={loading}
+              isLoading={isPending}
               disabled={!date || !slot}
             >
               Confirmar agendamento

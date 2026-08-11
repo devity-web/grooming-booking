@@ -15,13 +15,14 @@ import {Skeleton} from '../ui/skeleton';
 
 interface ServiceSelectProps {
   onChange: (value: string) => void;
+  businessId: string;
 }
 
-export function ServicesSelect({onChange}: ServiceSelectProps) {
+export function ServicesSelect({onChange, businessId}: ServiceSelectProps) {
   const {data, isLoading} = useQuery({
-    queryKey: ['services'],
+    queryKey: ['services', businessId],
     queryFn: async (): Promise<Service[]> => {
-      const response = await fetch('/api/services');
+      const response = await fetch(`/api/services?businessId=${businessId}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch services');

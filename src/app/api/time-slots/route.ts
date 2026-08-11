@@ -1,17 +1,12 @@
-import {type NextRequest, NextResponse} from 'next/server';
+import type {NextRequest} from 'next/server';
+import {badRequest, ok} from '@/lib/next';
 import prisma from '@/lib/prisma';
-import {delay} from '@/lib/utils';
 
 export async function GET(req: NextRequest) {
-  await delay(1000);
-
   const date = req.nextUrl.searchParams.get('date');
 
   if (!date) {
-    return NextResponse.json(
-      {message: 'Missing date from query'},
-      {status: 400},
-    );
+    return badRequest('Missing date from query');
   }
 
   const dateValue = new Date(date.toString());
@@ -37,5 +32,5 @@ export async function GET(req: NextRequest) {
 
   const availableSlots = allSlots.filter(slot => !bookedSlots.includes(slot));
 
-  return NextResponse.json(availableSlots);
+  return ok(availableSlots);
 }

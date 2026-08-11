@@ -5,7 +5,6 @@ import {
   IconScissors,
   IconSettings,
 } from '@tabler/icons-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import {Suspense} from 'react';
 import {NavMain} from '@/components/nav-main';
@@ -19,6 +18,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import {Logo} from './logo';
 
 const items = [
   {
@@ -60,13 +60,8 @@ export async function AppSidebar({
               className="data-[slot=sidebar-menu-button]:p-1.5!"
               render={<Link href="/" />}
             >
-              <Image
-                alt="Logo"
-                src="/images/logo.png"
-                width={32}
-                height={32}
-              />
-              <span className="text-base font-semibold">Toskio</span>
+              <Logo className="size-8" />
+              <span className="text-base font-bold">toskio.app</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

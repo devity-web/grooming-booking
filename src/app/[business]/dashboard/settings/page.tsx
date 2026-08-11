@@ -1,7 +1,8 @@
-import {IconDog, IconUser} from '@tabler/icons-react';
+import {IconApiApp, IconDog, IconUser} from '@tabler/icons-react';
 import {Suspense} from 'react';
 import {SettingsAccount} from '@/components/dashboard/settings-account';
 import {SettingsBusiness} from '@/components/dashboard/settings-business';
+import SettingsIntegrations from '@/components/dashboard/settings-integrations';
 import {Skeleton} from '@/components/ui/skeleton';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {getTenantContext, type TenantPageProps} from '@/lib/tenant';
@@ -66,12 +67,19 @@ async function SettingsPageWrapper({params}: TenantPageProps) {
             <IconDog />
             Business
           </TabsTrigger>
+          <TabsTrigger value="integrations">
+            <IconApiApp />
+            Integrations
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="account">
           <SettingsAccount />
         </TabsContent>
         <TabsContent value="business">
           <SettingsBusiness business={business} />
+        </TabsContent>
+        <TabsContent value="integrations">
+          <SettingsIntegrations business={business} />
         </TabsContent>
       </Tabs>
     </div>

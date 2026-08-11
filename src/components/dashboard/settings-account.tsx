@@ -165,7 +165,7 @@ export function SettingsAccount() {
             </CardContent>
           ) : (
             <CardContent>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 items-start">
                 <div className="flex gap-2 items-center col-span-2">
                   <Avatar className="size-24">
                     <AvatarImage

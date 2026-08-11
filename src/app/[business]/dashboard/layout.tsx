@@ -1,4 +1,4 @@
-import type {PropsWithChildren} from 'react';
+import {type PropsWithChildren, Suspense} from 'react';
 import {AppSidebar} from '@/components/app-sidebar';
 import {SiteHeader} from '@/components/site-header';
 import {SidebarInset, SidebarProvider} from '@/components/ui/sidebar';
@@ -19,7 +19,9 @@ export default async function DashboardLayout({
     >
       <AppSidebar {...props} variant="inset" />
       <SidebarInset>
-        <SiteHeader />
+        <Suspense>
+          <SiteHeader />
+        </Suspense>
         <div className="mx-auto w-full max-w-full p-6 md:max-w-6xl">
           {children}
         </div>

@@ -1,24 +1,11 @@
 import {IconChevronLeft} from '@tabler/icons-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import type {PropsWithChildren} from 'react';
+import {Logo} from '@/components/logo';
 
 export default function AuthLayout({children}: PropsWithChildren) {
   return (
     <main className="relative flex min-h-svh flex-col overflow-hidden bg-background">
-      {/* Background */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(/images/corgi-bg.png)',
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute inset-0 bg-linear-to-b from-background/40 via-background/20 to-background/60"
-        aria-hidden="true"
-      />
-
       {/* Top nav */}
       <header className="relative z-10 p-6">
         <Link href="/" className="inline-flex items-center gap-1 text-sm">
@@ -30,13 +17,7 @@ export default function AuthLayout({children}: PropsWithChildren) {
       {/* Center content */}
       <div className="relative z-10 flex flex-1 items-center justify-center px-6 pb-24">
         <div className="flex w-full max-w-110 flex-col items-center">
-          <Image
-            quality={100}
-            alt="Logo"
-            src="/images/logo.png"
-            width={80}
-            height={80}
-          />
+          <Logo />
 
           <h1 className="mt-6 text-pretty text-center text-3xl font-semibold tracking-tight">
             Entrar no Toskio

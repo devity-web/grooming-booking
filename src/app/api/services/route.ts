@@ -1,21 +1,26 @@
-import {NextResponse} from 'next/server';
+import type {NextRequest} from 'next/server';
+import {badRequest, internalServerError, ok} from '@/lib/next';
 import prisma from '@/lib/prisma';
-import { delay } from '@/lib/utils';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    await delay(1500);
+    const id = request.nextUrl.searchParams.get('businessId');
+
+    if (!id) {
+      return badRequest('businessId is required');
+    }
+
     const services = await prisma.service.findMany({
       where: {
         isActive: true,
+        business: {
+          id,
+        },
       },
     });
-    return NextResponse.json(services);
+
+    return ok(services);
   } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      {error: 'Failed to fetch services'},
-      {status: 500},
-    );
+    return internalServerError(error as Error);
   }
 }

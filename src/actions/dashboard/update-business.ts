@@ -11,6 +11,8 @@ interface UpdateBusinessData {
 export async function updateBusiness(id: string, data: UpdateBusinessData) {
   try {
     console.log('[update-business] updating business', data);
+    const currentBusiness = await prisma.business.findUnique({where: {id}});
+
     const business = await prisma.business.update({
       where: {
         id,
@@ -22,7 +24,10 @@ export async function updateBusiness(id: string, data: UpdateBusinessData) {
       throw new Error('Business with id not found');
     }
 
-    return business;
+    return {
+      business,
+      shouldRefresh: currentBusiness?.url !== business.url,
+    };
   } catch (error) {
     console.error('[update-business] failed to update', error);
     throw error;

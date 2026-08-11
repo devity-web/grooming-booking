@@ -54,11 +54,12 @@ model Service {
 }
 
 model Profile {
-  id         String     @id @default(uuid())
-  userId     String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @default(now()) @updatedAt
-  businesses Business[]
+  id           String        @id @default(uuid())
+  userId       String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
+  businesses   Business[]
+  integrations Integration[]
 }
 
 model Business {
@@ -74,4 +75,14 @@ model Business {
   services     Service[]
   appointments Appointment[]
   customers    Customer[]
+}
+
+model Integration {
+  id        String   @id @default(uuid())
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  profileId String
+  type      String
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
