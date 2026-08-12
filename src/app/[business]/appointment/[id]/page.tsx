@@ -151,7 +151,9 @@ async function AppointmentDetailsWrapper({
           </Link>
 
           <Link href="/">
-            <Button className="w-full" size="lg" variant="outline">Alterar data ou hora</Button>
+            <Button className="w-full" size="lg" variant="outline">
+              Alterar data ou hora
+            </Button>
           </Link>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import type {NextRequest} from 'next/server';
 import {badRequest, conflict, ok} from '@/lib/next';
 import prisma from '@/lib/prisma';
-import { delay } from '@/lib/utils';
+import {delay} from '@/lib/utils';
 
 export async function GET(req: NextRequest) {
   const slug = req.nextUrl.searchParams.get('slug');

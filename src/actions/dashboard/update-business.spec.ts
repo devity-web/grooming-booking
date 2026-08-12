@@ -1,12 +1,13 @@
 import {afterEach, describe, expect, it, vi} from 'vitest';
 
-const {update} = vi.hoisted(() => ({
+const {update, findUnique} = vi.hoisted(() => ({
   update: vi.fn(),
+  findUnique: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
   default: {
-    business: {update},
+    business: {update, findUnique},
   },
 }));
 
@@ -24,16 +25,37 @@ describe('updateBusiness', () => {
     update.mockReset();
   });
 
-  it('updates and returns the business', async () => {
+  it('updates and returns the business with not refresh when url is equal', async () => {
     const business = {
       id: 'business-1',
       ...businessData,
     };
     update.mockResolvedValue(business);
+    findUnique.mockResolvedValue(business);
 
-    await expect(updateBusiness('business-1', businessData)).resolves.toBe(
+    await expect(updateBusiness('business-1', businessData)).resolves.toEqual({
       business,
-    );
+      shouldRefresh: false,
+    });
+    expect(update).toHaveBeenCalledOnce();
+    expect(update).toHaveBeenCalledWith({
+      where: {id: 'business-1'},
+      data: businessData,
+    });
+  });
+
+  it('updates and returns the business with refresh when url is different', async () => {
+    const business = {
+      id: 'business-1',
+      ...businessData,
+    };
+    update.mockResolvedValue(business);
+    findUnique.mockResolvedValue({...business, url: 'another-url'});
+
+    await expect(updateBusiness('business-1', businessData)).resolves.toEqual({
+      business,
+      shouldRefresh: true,
+    });
     expect(update).toHaveBeenCalledOnce();
     expect(update).toHaveBeenCalledWith({
       where: {id: 'business-1'},

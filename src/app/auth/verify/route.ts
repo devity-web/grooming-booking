@@ -42,7 +42,9 @@ export async function GET(req: NextRequest) {
   });
 
   if (!business) {
-    return {error: 'Missing business'};
+    return internalServerError(
+      new Error('Unabel to find business for account'),
+    );
   }
 
   cookieStore.set('business-url', business.url, {

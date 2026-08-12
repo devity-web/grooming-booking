@@ -329,9 +329,7 @@ export default function Page() {
                 <span className="mb-7 flex size-12 items-center justify-center rounded-2xl bg-[#f9e4d4] text-[#a45132]">
                   <Icon className="size-5" />
                 </span>
-                <h3 className="text-xl font-bold tracking-tight">
-                  {title}
-                </h3>
+                <h3 className="text-xl font-bold tracking-tight">{title}</h3>
                 <p className="mt-3 leading-7 text-[#6f645c]">{description}</p>
               </CardContent>
             </Card>
@@ -482,7 +480,7 @@ export default function Page() {
                   <CardTitle
                     className={cn(
                       'text-muted text-2xl font-bold tracking-[-0.03em]',
-                      plan.featured && 'mt-4'
+                      plan.featured && 'mt-4',
                     )}
                   >
                     {plan.name}

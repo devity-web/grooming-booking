@@ -57,7 +57,9 @@ export function BookingCalendar({selected, onSelect}: BookingCalendarProps) {
     cells.push(new Date(year, month, day));
   }
 
-  const canGoNext = year < today.getFullYear() || (year === today.getFullYear() && month < today.getMonth() + 3);
+  const canGoNext =
+    year < today.getFullYear() ||
+    (year === today.getFullYear() && month < today.getMonth() + 3);
 
   const canGoPrev =
     year > today.getFullYear() ||

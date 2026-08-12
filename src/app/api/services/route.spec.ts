@@ -1,8 +1,9 @@
 import {NextRequest} from 'next/server';
 import {afterEach, describe, expect, it, vi} from 'vitest';
 
-const {findMany} = vi.hoisted(() => ({
+const {findMany, connection} = vi.hoisted(() => ({
   findMany: vi.fn(),
+  connection: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
@@ -10,6 +11,14 @@ vi.mock('@/lib/prisma', () => ({
     service: {findMany},
   },
 }));
+
+vi.mock(import('next/server'), async importOriginal => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    connection,
+  };
+});
 
 import {GET} from './route';
 

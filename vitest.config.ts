@@ -9,5 +9,11 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: ['src/app/generated/**', 'src/**/*.d.ts'],
+      reporter: ['text', 'html'],
+    },
   },
 });

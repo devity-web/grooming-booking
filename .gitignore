@@ -17,3 +17,5 @@ node_modules
 /src/app/generated/prisma
 
 src/lib/service-account.json
+
+coverage/
