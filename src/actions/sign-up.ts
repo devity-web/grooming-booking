@@ -4,10 +4,7 @@ import prisma from '@/lib/prisma';
 import type {SignUpFormData} from '@/lib/schemas/sign-up.schema';
 import {createClient} from '@/lib/supabase/server';
 
-export async function signUp({
-  origin,
-  ...data
-}: SignUpFormData & {origin: string}) {
+export async function signUp(data: SignUpFormData) {
   const client = await createClient();
   const {
     data: {user},
@@ -16,7 +13,7 @@ export async function signUp({
     email: data.email,
     password: data.password,
     options: {
-      emailRedirectTo: `${origin}/auth/verify`,
+      emailRedirectTo: `${process.env.APP_URL}/auth/verify`,
       data: {
         first_name: data.firstName,
         last_name: data.lastName,

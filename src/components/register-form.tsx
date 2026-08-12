@@ -31,10 +31,7 @@ export function RegisterForm() {
   const {mutate, isPending} = useMutation({
     mutationKey: ['auth', 'signUp'],
     mutationFn: async (data: SignUpFormData) => {
-      const origin =
-        typeof window !== 'undefined' ? window.location.origin : '';
-
-      const response = await signUp({...data, origin});
+      const response = await signUp(data);
 
       return response;
     },
