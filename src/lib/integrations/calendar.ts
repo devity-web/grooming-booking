@@ -1,6 +1,7 @@
 import {google} from 'googleapis';
 import type {Integration} from '@/app/generated/prisma/client';
 import type {Appointment} from '@/types/appointment';
+import {decrypt} from '../encryption';
 import {formatDate, formatTime} from '../utils';
 
 export const createGoogleAuth = () => {
@@ -21,7 +22,7 @@ export const googleCalendar = {
 
     const oauth = createGoogleAuth();
     oauth.setCredentials({
-      refresh_token: googleCalendarInt.token,
+      refresh_token: decrypt(googleCalendarInt.token),
     });
 
     const calendar = google.calendar({version: 'v3', auth: oauth});
