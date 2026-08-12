@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     await upsertIntegration(business, tokens.refresh_token);
 
     return NextResponse.redirect(
-      `${process.env.APP_URL}/${business.url}/dashboard/settings?success=google-calendar`,
+      `${process.env.APP_URL}/${business.url}/dashboard/settings?tab=integrations&success=google-calendar`,
     );
   } catch (error) {
     console.error(error);
