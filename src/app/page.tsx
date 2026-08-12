@@ -11,7 +11,6 @@ import {
   Heart,
   Link2,
   PawPrint,
-  Sparkles,
   Star,
 } from 'lucide-react';
 import Image from 'next/image';
@@ -25,7 +24,15 @@ import {
 } from '@/components/ui/accordion';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
-import {Card, CardContent} from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {cn} from '@/lib/utils';
 
 const features = [
   {
@@ -92,6 +99,48 @@ const faqs = [
   },
 ];
 
+const pricingPlans = [
+  {
+    name: 'Ninho',
+    tier: 'Starter',
+    price: '4,99',
+    description: 'Um cantinho simples para começar a organizar seus cuidados.',
+    features: [
+      'Agenda online sempre disponível',
+      'Página de agendamento personalizada',
+      'Cadastro de serviços e clientes',
+    ],
+    cta: 'Começar no Ninho',
+  },
+  {
+    name: 'Aconchego',
+    tier: 'Pro',
+    price: '9,99',
+    description: 'Mais tranquilidade para uma rotina que já está crescendo.',
+    features: [
+      'Tudo do plano Ninho',
+      'Agendamentos ilimitados',
+      'Integração com Google Calendar',
+      'Visão completa da rotina',
+    ],
+    cta: 'Escolher Aconchego',
+    featured: true,
+  },
+  {
+    name: 'Matilha',
+    tier: 'Equipe',
+    price: '19,99',
+    description: 'Para dividir o cuidado e manter toda a equipe em sintonia.',
+    features: [
+      'Tudo do plano Aconchego',
+      'Rotina compartilhada com a equipe',
+      'Organização de vários profissionais',
+      'Atendimento prioritário',
+    ],
+    cta: 'Crescer com a Matilha',
+  },
+];
+
 const starLabels = ['star-1', 'star-2', 'star-3', 'star-4', 'star-5'];
 
 export default function Page() {
@@ -134,6 +183,12 @@ export default function Page() {
             >
               Dúvidas
             </a>
+            <a
+              className="transition-colors hover:text-[#9c4e2f]"
+              href="#planos"
+            >
+              Planos
+            </a>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -150,7 +205,7 @@ export default function Page() {
 
       <section id="inicio" className="relative">
         <div
-          className="absolute -top-20 right-[-14rem] size-[32rem] rounded-full bg-[#f8dfca]/50 blur-3xl"
+          className="absolute -top-20 -right-56 size-128 rounded-full bg-[#f8dfca]/50 blur-3xl"
           aria-hidden="true"
         />
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 sm:px-6 sm:py-20 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16 lg:px-8 lg:py-24">
@@ -204,13 +259,13 @@ export default function Page() {
                 <p className="text-sm font-semibold">Bento · Banho & tosa</p>
               </div>
             </div>
-            <div className="overflow-hidden rounded-[2rem] border-[6px] border-white bg-[#f2c6a8] shadow-2xl shadow-[#80462d]/15">
+            <div className="overflow-hidden rounded-4xl border-[6px] border-white bg-[#f2c6a8] shadow-2xl shadow-[#80462d]/15">
               <Image
                 src="/images/hero-grooming.jpg"
                 alt="Corgi feliz em um espaço de banho e tosa acolhedor"
                 width={1280}
                 height={1024}
-                className="aspect-[5/4] h-auto w-full object-cover"
+                className="aspect-5/4 h-auto w-full object-cover"
                 priority
               />
             </div>
@@ -274,7 +329,7 @@ export default function Page() {
                 <span className="mb-7 flex size-12 items-center justify-center rounded-2xl bg-[#f9e4d4] text-[#a45132]">
                   <Icon className="size-5" />
                 </span>
-                <h3 className="text-xl font-bold tracking-[-0.025em]">
+                <h3 className="text-xl font-bold tracking-tight">
                   {title}
                 </h3>
                 <p className="mt-3 leading-7 text-[#6f645c]">{description}</p>
@@ -322,7 +377,7 @@ export default function Page() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28 lg:px-8">
-        <div className="grid items-center gap-12 rounded-[2rem] bg-[#f4e3d3] p-7 sm:p-10 lg:grid-cols-[0.72fr_1.28fr] lg:p-14">
+        <div className="grid items-center gap-12 rounded-4xl bg-[#f4e3d3] p-7 sm:p-10 lg:grid-cols-[0.72fr_1.28fr] lg:p-14">
           <div className="relative mx-auto aspect-square w-full max-w-xs overflow-hidden rounded-[1.75rem] bg-[#e6b68f]">
             <Image
               src="/images/groomed-pet.png"
@@ -342,7 +397,7 @@ export default function Page() {
                 <Star key={star} className="size-4 fill-current" />
               ))}
             </div>
-            <p className="text-balance text-2xl leading-snug font-semibold tracking-[-0.025em] sm:text-3xl">
+            <p className="text-balance text-2xl leading-snug font-semibold tracking-tight sm:text-3xl">
               “A Toskio devolveu minhas manhãs. Hoje os clientes agendam
               sozinhos e eu começo o dia sabendo exatamente quem vou receber.”
             </p>
@@ -388,8 +443,109 @@ export default function Page() {
         </div>
       </section>
 
+      <section
+        id="planos"
+        className="bg-[#fffaf5] px-5 py-20 sm:px-6 sm:py-28 lg:px-8"
+      >
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-bold tracking-[0.16em] text-[#a75536] uppercase">
+              Planos para cada fase
+            </p>
+            <h2 className="mt-4 text-balance text-3xl font-bold tracking-[-0.04em] sm:text-5xl">
+              Escolha o cantinho ideal para o seu negócio crescer.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-[#6e625b]">
+              Comece leve e mude de plano quando precisar. Sem compromisso e sem
+              complicação.
+            </p>
+          </div>
+
+          <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-3">
+            {pricingPlans.map(plan => (
+              <Card
+                key={plan.name}
+                className={cn(
+                  'relative gap-0 rounded-[1.75rem] py-0 shadow-sm',
+                  plan.featured
+                    ? 'border-[#b75d3d] bg-[#fff7f0] ring-2 ring-[#b75d3d] lg:-translate-y-3'
+                    : 'border-[#342a25]/8 bg-white ring-[#342a25]/8',
+                )}
+              >
+                {plan.featured && (
+                  <Badge className="absolute top-3 left-1/2 h-7 -translate-x-1/2 bg-[#9c4e2f] px-3 text-white">
+                    Mais escolhido
+                  </Badge>
+                )}
+
+                <CardHeader className="gap-3 px-7 pt-8 pb-6">
+                  <CardTitle
+                    className={cn(
+                      'text-muted text-2xl font-bold tracking-[-0.03em]',
+                      plan.featured && 'mt-4'
+                    )}
+                  >
+                    {plan.name}
+                  </CardTitle>
+                  <CardDescription className="min-h-12 leading-6 text-[#74675f]">
+                    {plan.description}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="flex flex-1 flex-col px-7 pb-7">
+                  <div className="flex items-end gap-1 border-y border-[#342a25]/10 py-6">
+                    <span className="mb-1 text-lg font-semibold text-[#6d5f57]">
+                      €
+                    </span>
+                    <span className="text-5xl text-muted leading-none font-bold tracking-[-0.055em]">
+                      {plan.price}
+                    </span>
+                    <span className="mb-1 text-sm text-[#74675f]">/mês</span>
+                  </div>
+
+                  <ul className="mt-7 flex flex-col gap-4">
+                    {plan.features.map(feature => (
+                      <li
+                        key={feature}
+                        className="flex items-start gap-3 text-[#5f544d]"
+                      >
+                        <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-[#e6ecd7] text-[#62733d]">
+                          <Check className="size-3.5" aria-hidden="true" />
+                        </span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+
+                <CardFooter className="border-0 bg-transparent px-7 pt-0 pb-7">
+                  <Button
+                    nativeButton={false}
+                    variant={plan.featured ? 'default' : 'outline'}
+                    className={cn(
+                      'h-12 w-full rounded-full text-base',
+                      plan.featured
+                        ? 'bg-[#9c4e2f] text-white hover:bg-[#813d25]'
+                        : 'border-[#bda99c] bg-transparent text-[#4d4039] hover:bg-[#f7eade]',
+                    )}
+                    render={<Link href="/auth/signup" />}
+                  >
+                    {plan.cta}
+                    <ArrowRight data-icon="inline-end" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+
+          <p className="mt-7 text-center text-sm text-[#74675f]">
+            Todos os planos incluem teste grátis. Cancele quando quiser.
+          </p>
+        </div>
+      </section>
+
       <section className="px-5 py-12 sm:px-6 sm:py-20">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-[#eaa67b] px-6 py-14 text-center sm:px-12 sm:py-18">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-4xl bg-[#eaa67b] px-6 py-14 text-center sm:px-12 sm:py-18">
           <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-white/35">
             <Heart className="size-5 fill-white/40" />
           </span>
