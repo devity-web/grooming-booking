@@ -1,6 +1,7 @@
 import {
   IconApiAppOff,
   IconBarrierBlock,
+  IconRocket,
   IconSparkles,
 } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -100,7 +101,7 @@ async function SettingsIntegrationsWrapper({business}: {business: Business}) {
         </Card>
       ))}
 
-      <Card>
+      <Card className="flex flex-col justify-between">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <IconBarrierBlock />
@@ -108,6 +109,12 @@ async function SettingsIntegrationsWrapper({business}: {business: Business}) {
           </CardTitle>
         </CardHeader>
         <CardContent> Coming soon...</CardContent>
+        <CardFooter>
+          <Button variant="outline">
+            <IconRocket />
+            Get in touch
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );
