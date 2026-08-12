@@ -1,7 +1,7 @@
-/** biome-ignore-all lint/suspicious/useIterableCallbackReturn: supabase code */
-/** biome-ignore-all lint/style/noNonNullAssertion: supabase code */
+/** biome-ignore-all lint/suspicious/useIterableCallbackReturn: supabase */
 import {createServerClient} from '@supabase/ssr';
 import {type NextRequest, NextResponse} from 'next/server';
+import {getServerEnv} from '../env';
 
 const PROTECTED_ROUTES = ['/dashboard'];
 const AUTH_ROUTES = ['/auth'];
@@ -10,12 +10,13 @@ export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
+  const env = getServerEnv();
 
   // With Fluid compute, don't put this client in a global environment
   // variable. Always create a new one on each request.
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     {
       cookies: {
         getAll() {

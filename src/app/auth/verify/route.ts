@@ -1,5 +1,6 @@
 import {cookies} from 'next/headers';
 import {type NextRequest, NextResponse} from 'next/server';
+import {getServerEnv} from '@/lib/env';
 import {badRequest, internalServerError} from '@/lib/next';
 import prisma from '@/lib/prisma';
 import {createClient} from '@/lib/supabase/server';
@@ -47,15 +48,15 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  const env = getServerEnv();
+
   cookieStore.set('business-url', business.url, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 30,
   });
 
-  return NextResponse.redirect(
-    `${process.env.APP_URL}/${business.url}/dashboard`,
-  );
+  return NextResponse.redirect(`${env.APP_URL}/${business.url}/dashboard`);
 }

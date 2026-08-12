@@ -1,6 +1,7 @@
 'use server';
 
 import {cookies} from 'next/headers';
+import {getServerEnv} from '@/lib/env';
 import prisma from '@/lib/prisma';
 import {createClient} from '@/lib/supabase/server';
 
@@ -33,9 +34,11 @@ export async function signIn(data: {email: string; password: string}) {
     return {error: 'Missing business'};
   }
 
+  const env = getServerEnv();
+
   cookieStore.set('business-url', business.url, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 30,

@@ -2,13 +2,16 @@ import {google} from 'googleapis';
 import type {Integration} from '@/app/generated/prisma/client';
 import type {Appointment} from '@/types/appointment';
 import {decrypt} from '../encryption';
+import {getServerEnv} from '../env';
 import {formatDate, formatTime} from '../utils';
+
+const env = getServerEnv();
 
 export const createGoogleAuth = () => {
   return new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    `${process.env.APP_URL}/api/integrations/google-calendar/callback`,
+    env.GOOGLE_CLIENT_ID,
+    env.GOOGLE_CLIENT_SECRET,
+    `${env.APP_URL}/api/integrations/google-calendar/callback`,
   );
 };
 

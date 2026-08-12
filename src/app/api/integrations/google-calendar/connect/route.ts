@@ -1,6 +1,7 @@
 import {randomBytes} from 'node:crypto';
 import {cookies} from 'next/headers';
 import {NextResponse} from 'next/server';
+import {getServerEnv} from '@/lib/env';
 import {createGoogleAuth} from '@/lib/integrations/calendar';
 
 export async function GET() {
@@ -8,10 +9,11 @@ export async function GET() {
 
   const state = randomBytes(32).toString('hex');
   const cookieStore = await cookies();
+  const env = getServerEnv();
 
   cookieStore.set('google-calendar-oauth-state', state, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/api/integrations/google-calendar',
     maxAge: 10 * 60,

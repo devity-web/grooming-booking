@@ -3,6 +3,7 @@ import {cookies} from 'next/headers';
 import {connection, type NextRequest, NextResponse} from 'next/server';
 import type {Business} from '@/app/generated/prisma/client';
 import {encrypt} from '@/lib/encryption';
+import {getServerEnv} from '@/lib/env';
 import {createGoogleAuth} from '@/lib/integrations/calendar';
 import {badRequest, internalServerError} from '@/lib/next';
 import prisma from '@/lib/prisma';
@@ -63,8 +64,10 @@ export async function GET(request: NextRequest) {
 
     await upsertIntegration(business, tokens.refresh_token);
 
+    const env = getServerEnv();
+
     return NextResponse.redirect(
-      `${process.env.APP_URL}/${business.url}/dashboard/settings?tab=integrations&success=google-calendar`,
+      `${env.APP_URL}/${business.url}/dashboard/settings?tab=integrations&success=google-calendar`,
     );
   } catch (error) {
     console.error(error);

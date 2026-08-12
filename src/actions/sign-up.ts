@@ -1,11 +1,14 @@
 'use server';
 
+import {getServerEnv} from '@/lib/env';
 import prisma from '@/lib/prisma';
 import type {SignUpFormData} from '@/lib/schemas/sign-up.schema';
 import {createClient} from '@/lib/supabase/server';
 
 export async function signUp(data: SignUpFormData) {
   const client = await createClient();
+  const env = getServerEnv();
+
   const {
     data: {user},
     error,
@@ -13,7 +16,7 @@ export async function signUp(data: SignUpFormData) {
     email: data.email,
     password: data.password,
     options: {
-      emailRedirectTo: `${process.env.APP_URL}/auth/verify`,
+      emailRedirectTo: `${env.APP_URL}/auth/verify`,
       data: {
         first_name: data.firstName,
         last_name: data.lastName,

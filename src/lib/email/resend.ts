@@ -1,14 +1,7 @@
 import {Resend} from 'resend';
 import type {Appointment} from '@/types/appointment';
+import {getServerEnv} from '../env';
 import {formatDate, formatTime, moneyFormat} from '../utils';
-
-// Validate that the API key is configured
-if (!process.env.RESEND_API_KEY) {
-  throw new Error(
-    'Missing RESEND_API_KEY environment variable. ' +
-      'Get your API key from https://resend.com/api-keys',
-  );
-}
 
 /**
  * Singleton Resend client instance
@@ -25,7 +18,9 @@ if (!process.env.RESEND_API_KEY) {
  * });
  * ```
  */
-export const resend = new Resend(process.env.RESEND_API_KEY);
+const env = getServerEnv();
+
+export const resend = new Resend(env.RESEND_API_KEY);
 
 export const TEMPLATES = Object.freeze({
   appointmentConfirmed: 'appointment-confirmation',

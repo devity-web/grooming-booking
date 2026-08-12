@@ -1,13 +1,16 @@
 import 'server-only';
 
 import {createCipheriv, createDecipheriv, randomBytes} from 'node:crypto';
+import {getServerEnv} from './env';
 
 const ALGORITHM = 'aes-256-gcm';
 const FORMAT_VERSION = 'v1';
 const IV_LENGTH = 12;
 
+const env = getServerEnv();
+
 function getEncryptionKey() {
-  const encodedKey = process.env.TOKEN_ENCRYPTION_KEY;
+  const encodedKey = env.TOKEN_ENCRYPTION_KEY;
 
   if (!encodedKey) {
     throw new Error('TOKEN_ENCRYPTION_KEY is not configured');
