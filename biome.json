@@ -16,7 +16,10 @@
       "!**/.ai",
       "!**/*.svg",
       "!**/coverage",
+      "!**/playwright-report",
+      "!**/test-results",
       "!**/templates",
+      "!next-env.d.ts",
       "!src/components/ui",
       "!src/app/generated",
       "!src/app/globals.css"
