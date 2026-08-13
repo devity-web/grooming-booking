@@ -4,6 +4,7 @@ allowBuilds:
   msw: true
   prisma: true
   sharp: true
+  unrs-resolver: true
 minimumReleaseAgeExclude:
   - '@supabase/auth-js@2.112.1'
   - '@supabase/functions-js@2.112.1'

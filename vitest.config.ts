@@ -8,6 +8,7 @@ export default defineConfig({
     },
   },
   test: {
+    include: ['src/**/*.spec.{ts,tsx}'],
     setupFiles: ['./src/setup.ts'],
     environment: 'node',
     coverage: {
