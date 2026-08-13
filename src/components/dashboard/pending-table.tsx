@@ -5,15 +5,15 @@ import {useState, useTransition} from 'react';
 import {confirmAppointment} from '@/actions/dashboard/confirm-appointment';
 import {formatDate} from '@/lib/utils';
 import type {Appointment} from '@/types/appointment';
-import {BookingLabel} from './booking-label';
-import {Button} from './ui/button';
+import {BookingLabel} from '../booking-label';
+import {Button} from '../ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from './ui/card';
+} from '../ui/card';
 import {
   Table,
   TableBody,
@@ -21,7 +21,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from './ui/table';
+} from '../ui/table';
 
 interface PendingTableProps {
   appointments: Appointment[];

@@ -15,8 +15,8 @@ import {
   WEEKDAY_LABELS,
 } from '@/lib/week';
 import type {Appointment} from '@/types/appointment';
-import {AppointmentBlock} from './appointment-block';
-import {AppointmentDetailSheet} from './appointment-detail-sheet';
+import {AppointmentBlock} from '../appointment-block';
+import {AppointmentDetailSheet} from '../appointment-detail-sheet';
 
 const HOURS = Array.from(
   {length: DAY_END_HOUR - DAY_START_HOUR + 1},

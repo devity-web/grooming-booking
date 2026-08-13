@@ -19,3 +19,5 @@ node_modules
 src/lib/service-account.json
 
 coverage/
+playwright-report/
+test-results/

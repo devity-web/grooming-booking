@@ -8,9 +8,9 @@ import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import z from 'zod';
 import {signIn} from '@/actions/sign-in';
-import {Button} from './ui/button';
-import {Form, FormField, FormItem, FormLabel, FormMessage} from './ui/form';
-import {Input} from './ui/input';
+import {Button} from '../ui/button';
+import {Form, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
+import {Input} from '../ui/input';
 
 const formSchema = z.object({
   email: z.email('Email inválido'),

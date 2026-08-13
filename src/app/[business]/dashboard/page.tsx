@@ -1,8 +1,8 @@
 'use server';
 
 import {Suspense} from 'react';
-import {PendingTable} from '@/components/pending-table';
-import {SectionCards} from '@/components/section-cards';
+import {PendingTable} from '@/components/dashboard/pending-table';
+import {SectionCards} from '@/components/dashboard/section-cards';
 import {Spinner} from '@/components/ui/spinner';
 import {getTenantPrisma, type TenantPageProps} from '@/lib/tenant';
 

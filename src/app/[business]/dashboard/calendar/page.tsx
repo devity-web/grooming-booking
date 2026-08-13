@@ -1,6 +1,6 @@
 import {Suspense} from 'react';
+import {WeekCalendar} from '@/components/dashboard/week-calendar';
 import {Spinner} from '@/components/ui/spinner';
-import {WeekCalendar} from '@/components/week-calendar';
 import {getTenantPrisma, type TenantPageProps} from '@/lib/tenant';
 
 export default async function CalendarPage(props: TenantPageProps) {

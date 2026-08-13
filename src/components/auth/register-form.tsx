@@ -11,9 +11,9 @@ import {
   type SignUpFormData,
   signUpFormSchema,
 } from '@/lib/schemas/sign-up.schema';
-import {Button} from './ui/button';
-import {Form, FormField, FormItem, FormLabel, FormMessage} from './ui/form';
-import {Input} from './ui/input';
+import {Button} from '../ui/button';
+import {Form, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
+import {Input} from '../ui/input';
 
 export function RegisterForm() {
   const router = useRouter();
