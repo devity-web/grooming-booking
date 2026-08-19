@@ -24,3 +24,5 @@ minimumReleaseAgeExclude:
   - '@biomejs/cli-win32-arm64@2.5.8'
   - '@biomejs/cli-win32-x64@2.5.8'
   - shadcn@4.17.0
+  - googleapis@176.0.0
+  - lucide-react@1.33.0
