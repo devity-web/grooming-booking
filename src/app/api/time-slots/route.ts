@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
   }
 
   const dateValue = new Date(date.toString());
+  const minimumSlotTime = Date.now() + 2 * 60 * 60 * 1000;
 
   const dayAppointments = await prisma.appointment.findMany({
     where: {
@@ -30,7 +31,13 @@ export async function GET(req: NextRequest) {
     return `${String(start).padStart(2, '0')}:00`;
   });
 
-  const availableSlots = allSlots.filter(slot => !bookedSlots.includes(slot));
+  const availableSlots = allSlots.filter(slot => {
+    const [hours, minutes] = slot.split(':').map(Number);
+    const slotDate = new Date(dateValue);
+    slotDate.setHours(hours, minutes, 0, 0);
+
+    return slotDate.getTime() >= minimumSlotTime && !bookedSlots.includes(slot);
+  });
 
   return ok(availableSlots);
 }

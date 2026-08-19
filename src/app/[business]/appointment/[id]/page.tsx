@@ -105,11 +105,19 @@ async function AppointmentDetailsWrapper({
               </span>
             </div>
           </div>
-          <Link href={`/${business}/appointment`}>
-            <Button className="mt-6 w-full" size="lg">
-              Fazer novo agendamento
-            </Button>
-          </Link>
+          <div className="flex flex-col gap-2 mt-6">
+            <Link href={`/${business}/appointment`}>
+              <Button className="w-full" size="lg">
+                Fazer novo agendamento
+              </Button>
+            </Link>
+
+            <Link href="/">
+              <Button className="w-full" size="lg" variant="outline">
+                Alterar data ou hora
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     );

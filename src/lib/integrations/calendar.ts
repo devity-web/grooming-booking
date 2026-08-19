@@ -3,6 +3,7 @@ import type {Integration} from '@/app/generated/prisma/client';
 import type {Appointment} from '@/types/appointment';
 import {decrypt} from '../encryption';
 import {getServerEnv} from '../env';
+import prisma from '../prisma';
 import {formatDate, formatTime} from '../utils';
 
 const env = getServerEnv();
@@ -16,7 +17,7 @@ export const createGoogleAuth = () => {
 };
 
 export const googleCalendar = {
-  createAppointmentEvent: (
+  createAppointmentEvent: async (
     appointment: Appointment,
     googleCalendarInt: Integration,
   ) => {
@@ -30,7 +31,7 @@ export const googleCalendar = {
 
     const calendar = google.calendar({version: 'v3', auth: oauth});
 
-    return calendar.events.insert({
+    const event = await calendar.events.insert({
       calendarId: 'primary',
       requestBody: {
         summary: `[Toskio] ${appointment.petName} - ${appointment.customer.name}`,
@@ -56,6 +57,17 @@ export const googleCalendar = {
           dateTime: endDate.toISOString(),
           timeZone: 'Europe/Lisbon',
         },
+      },
+    });
+
+    if (!event.data.id) {
+      throw new Error('Unable to get created event data id');
+    }
+
+    await prisma.calendarIntegration.create({
+      data: {
+        appointmentId: appointment.id,
+        eventId: event.data.id,
       },
     });
   },

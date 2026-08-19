@@ -6,7 +6,7 @@ import {useMutation} from '@tanstack/react-query';
 import {useRouter} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
-import {signUp} from '@/actions/sign-up';
+import {register} from '@/lib/auth-client';
 import {
   type SignUpFormData,
   signUpFormSchema,
@@ -31,9 +31,7 @@ export function RegisterForm() {
   const {mutate, isPending} = useMutation({
     mutationKey: ['auth', 'signUp'],
     mutationFn: async (data: SignUpFormData) => {
-      const response = await signUp(data);
-
-      return response;
+      await register(data);
     },
     onSuccess: () => {
       router.push('/auth');

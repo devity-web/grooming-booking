@@ -17,7 +17,7 @@ const mocks = vi.hoisted(() => ({
     | undefined,
   paramsGet: vi.fn(),
   push: vi.fn(),
-  signIn: vi.fn(),
+  login: vi.fn(),
   toastError: vi.fn(),
 }));
 
@@ -34,7 +34,7 @@ vi.mock('next/navigation', () => ({
 }));
 
 vi.mock('sonner', () => ({toast: {error: mocks.toastError}}));
-vi.mock('@/actions/sign-in', () => ({signIn: mocks.signIn}));
+vi.mock('@/lib/auth-client', () => ({login: mocks.login}));
 
 import {LoginForm} from './login-form';
 
@@ -63,7 +63,7 @@ describe('LoginForm', () => {
     mocks.mutationOptions = undefined;
     mocks.paramsGet.mockReset();
     mocks.push.mockReset();
-    mocks.signIn.mockReset();
+    mocks.login.mockReset();
     mocks.toastError.mockReset();
   });
 
@@ -82,19 +82,19 @@ describe('LoginForm', () => {
 
   it('authenticates with the submitted credentials', async () => {
     const business = {url: 'happy-paws'};
-    mocks.signIn.mockResolvedValue({business, error: null});
+    mocks.login.mockResolvedValue({business});
     renderForm();
 
     await expect(getMutationOptions().mutationFn(credentials)).resolves.toEqual(
       business,
     );
-    expect(mocks.signIn).toHaveBeenCalledOnce();
-    expect(mocks.signIn).toHaveBeenCalledWith(credentials);
+    expect(mocks.login).toHaveBeenCalledOnce();
+    expect(mocks.login).toHaveBeenCalledWith(credentials);
   });
 
   it('rejects the mutation when authentication fails', async () => {
     const error = new Error('Invalid login credentials');
-    mocks.signIn.mockResolvedValue({business: null, error});
+    mocks.login.mockRejectedValue(error);
     renderForm();
 
     await expect(getMutationOptions().mutationFn(credentials)).rejects.toBe(
@@ -117,7 +117,7 @@ describe('LoginForm', () => {
 
     getMutationOptions().onSuccess({url: 'happy-paws'});
 
-    expect(mocks.push).toHaveBeenCalledWith('happy-paws/dashboard');
+    expect(mocks.push).toHaveBeenCalledWith('/happy-paws/dashboard');
   });
 
   it('shows mutation errors in a toast', () => {

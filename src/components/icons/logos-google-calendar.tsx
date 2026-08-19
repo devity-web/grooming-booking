@@ -10,7 +10,7 @@ export const GoogleCalendarIcon = () => {
       xmlns="http://www.w3.org/2000/svg"
       className="h-6 w-6"
     >
-      <g clip-path="url(#clip0_5072_3766)">
+      <g clipPath="url(#clip0_5072_3766)">
         <path
           d="M390.736 121.264H121.264V390.736H390.736V121.264Z"
           fill="white"

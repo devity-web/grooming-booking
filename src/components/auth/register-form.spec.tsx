@@ -14,7 +14,7 @@ const mocks = vi.hoisted(() => ({
       }
     | undefined,
   push: vi.fn(),
-  signUp: vi.fn(),
+  register: vi.fn(),
   toastError: vi.fn(),
 }));
 
@@ -30,7 +30,7 @@ vi.mock('next/navigation', () => ({
 }));
 
 vi.mock('sonner', () => ({toast: {error: mocks.toastError}}));
-vi.mock('@/actions/sign-up', () => ({signUp: mocks.signUp}));
+vi.mock('@/lib/auth-client', () => ({register: mocks.register}));
 
 import {RegisterForm} from './register-form';
 
@@ -57,7 +57,7 @@ describe('RegisterForm', () => {
     mocks.mutate.mockReset();
     mocks.mutationOptions = undefined;
     mocks.push.mockReset();
-    mocks.signUp.mockReset();
+    mocks.register.mockReset();
     mocks.toastError.mockReset();
   });
 
@@ -80,19 +80,19 @@ describe('RegisterForm', () => {
   });
 
   it('registers with the submitted form data', async () => {
-    mocks.signUp.mockResolvedValue(undefined);
+    mocks.register.mockResolvedValue(undefined);
     renderForm();
 
     await expect(
       getMutationOptions().mutationFn(registration),
     ).resolves.toBeUndefined();
-    expect(mocks.signUp).toHaveBeenCalledOnce();
-    expect(mocks.signUp).toHaveBeenCalledWith(registration);
+    expect(mocks.register).toHaveBeenCalledOnce();
+    expect(mocks.register).toHaveBeenCalledWith(registration);
   });
 
   it('propagates registration failures from the mutation', async () => {
     const error = new Error('Email already registered');
-    mocks.signUp.mockRejectedValue(error);
+    mocks.register.mockRejectedValue(error);
     renderForm();
 
     await expect(getMutationOptions().mutationFn(registration)).rejects.toBe(

@@ -26,18 +26,19 @@ model Customer {
 }
 
 model Appointment {
-  id         String   @id @default(uuid())
-  customerId String
-  customer   Customer @relation(fields: [customerId], references: [id])
-  serviceId  String
-  service    Service  @relation(fields: [serviceId], references: [id])
-  date       DateTime
-  businessId String
-  petName    String
-  business   Business @relation(fields: [businessId], references: [id])
-  status     String   @default("pending")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
+  id                   String                @id @default(uuid())
+  customerId           String
+  customer             Customer              @relation(fields: [customerId], references: [id])
+  serviceId            String
+  service              Service               @relation(fields: [serviceId], references: [id])
+  date                 DateTime
+  businessId           String
+  petName              String
+  business             Business              @relation(fields: [businessId], references: [id])
+  status               String                @default("pending")
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @default(now()) @updatedAt
+  calendarIntegrations CalendarIntegration[]
 }
 
 model Service {
@@ -85,4 +86,11 @@ model Integration {
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model CalendarIntegration {
+  id            String      @id @default(uuid())
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  appointmentId String
+  eventId       String
 }

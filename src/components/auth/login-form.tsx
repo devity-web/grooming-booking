@@ -6,24 +6,20 @@ import {useMutation} from '@tanstack/react-query';
 import {useRouter, useSearchParams} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
-import z from 'zod';
-import {signIn} from '@/actions/sign-in';
+import {login} from '@/lib/auth-client';
+import {
+  type SignInFormData,
+  signInFormSchema,
+} from '@/lib/schemas/sign-in.schema';
 import {Button} from '../ui/button';
 import {Form, FormField, FormItem, FormLabel, FormMessage} from '../ui/form';
 import {Input} from '../ui/input';
 
-const formSchema = z.object({
-  email: z.email('Email inválido'),
-  password: z.string().min(1, 'A palavra-passe é obrigatória'),
-});
-
-type FormData = z.infer<typeof formSchema>;
-
 export function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<SignInFormData>({
+    resolver: zodResolver(signInFormSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -32,15 +28,7 @@ export function LoginForm() {
 
   const {mutate, isPending} = useMutation({
     mutationKey: ['auth', 'login'],
-    mutationFn: async (data: FormData) => {
-      const {business, error} = await signIn(data);
-
-      if (error || !business) {
-        throw error;
-      }
-
-      return business;
-    },
+    mutationFn: async (data: SignInFormData) => (await login(data)).business,
     onSuccess: data => {
       const next = params.get('next');
 
@@ -48,12 +36,12 @@ export function LoginForm() {
         return router.push(next);
       }
 
-      return router.push(`${data.url}/dashboard`);
+      return router.push(`/${data.url}/dashboard`);
     },
     onError: e => toast.error(e.message),
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: SignInFormData) => {
     mutate(data);
   };
 

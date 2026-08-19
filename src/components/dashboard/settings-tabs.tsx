@@ -1,6 +1,6 @@
 'use client';
 
-import {usePathname, useRouter, useSearchParams} from 'next/navigation';
+import {useSearchParams} from 'next/navigation';
 import type {ReactNode} from 'react';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 
@@ -20,8 +20,6 @@ interface Tab {
 }
 
 export function SettingsTabs({tabs}: {tabs: Tab[]}) {
-  const pathname = usePathname();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
   const currentTab = isSettingsTab(tabParam) ? tabParam : 'account';
@@ -29,7 +27,7 @@ export function SettingsTabs({tabs}: {tabs: Tab[]}) {
   const handleTabChange = (tab: SettingsTab) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('tab', tab);
-    router.replace(`${pathname}?${params.toString()}`, {scroll: false});
+    window.history.replaceState(null, '', `?${params.toString()}`);
   };
 
   return (

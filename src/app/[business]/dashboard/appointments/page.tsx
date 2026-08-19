@@ -1,16 +1,6 @@
-import {IconCalendarOff, IconLink} from '@tabler/icons-react';
 import {Suspense} from 'react';
-import {BookingRow} from '@/components/dashboard/booking-row';
-import {Button} from '@/components/ui/button';
+import {BookingTable} from '@/components/dashboard/booking-table';
 import {Card, CardContent} from '@/components/ui/card';
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from '@/components/ui/empty';
 import {Spinner} from '@/components/ui/spinner';
 import {
   Table,
@@ -76,40 +66,5 @@ async function BookingsTableBody({params}: TenantPageProps) {
     },
   });
 
-  if (bookings.length === 0) {
-    return (
-      <TableBody>
-        <TableRow>
-          <TableCell colSpan={7}>
-            <Empty>
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <IconCalendarOff />
-                </EmptyMedia>
-                <EmptyTitle>No appointments yet</EmptyTitle>
-                <EmptyDescription>
-                  You don't have any appointments yet. Get started by sharing
-                  you appointment link with your customers.
-                </EmptyDescription>
-              </EmptyHeader>
-              <EmptyContent className="flex-row justify-center gap-2">
-                <Button>
-                  <IconLink />
-                  Share
-                </Button>
-              </EmptyContent>
-            </Empty>
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    );
-  }
-
-  return (
-    <TableBody>
-      {bookings.map(booking => (
-        <BookingRow key={booking.id} booking={booking} />
-      ))}
-    </TableBody>
-  );
+  return <BookingTable bookings={bookings} />;
 }

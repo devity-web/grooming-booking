@@ -25,6 +25,7 @@ function createRequest(date?: string) {
 
 describe('GET /api/time-slots', () => {
   afterEach(() => {
+    vi.useRealTimers();
     findMany.mockReset();
   });
 
@@ -39,6 +40,8 @@ describe('GET /api/time-slots', () => {
   });
 
   it('returns the unbooked hourly slots for the requested date', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 7, 10, 9));
     findMany.mockResolvedValue([
       {date: new Date(2026, 7, 11, 9, 30)},
       {date: new Date(2026, 7, 11, 12, 45)},
@@ -64,6 +67,41 @@ describe('GET /api/time-slots', () => {
     await expect(response.json()).resolves.toEqual([
       '10:00',
       '11:00',
+      '13:00',
+      '14:00',
+      '15:00',
+      '16:00',
+      '17:00',
+    ]);
+  });
+
+  it('only returns slots that are at least two hours from now', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 7, 11, 10));
+    findMany.mockResolvedValue([]);
+
+    const response = await GET(createRequest('2026-08-11T12:00:00'));
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual([
+      '12:00',
+      '13:00',
+      '14:00',
+      '15:00',
+      '16:00',
+      '17:00',
+    ]);
+  });
+
+  it('excludes slots less than two hours from now', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 7, 11, 10, 1));
+    findMany.mockResolvedValue([]);
+
+    const response = await GET(createRequest('2026-08-11T12:00:00'));
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual([
       '13:00',
       '14:00',
       '15:00',
